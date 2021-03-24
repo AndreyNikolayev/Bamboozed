@@ -21,6 +21,7 @@ namespace Bamboozed.Bot.Controllers
         [HttpPost]
         public async Task PostAsync()
         {
+            await _adapter.ProcessAsync(Request, Response, _bot);
         }
     }
 }

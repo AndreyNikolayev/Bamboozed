@@ -32,7 +32,7 @@ namespace Bamboozed.Bot.Controllers
 
             await ((BotAdapter)_adapter).ContinueConversationAsync(_appId,
                 _conversationReference,
-                async (turnContext, cancellationToken) => await turnContext.SendActivityAsync(message),
+                async (turnContext, cancellationToken) => await turnContext.SendActivityAsync(message, cancellationToken: cancellationToken),
             default);
 
             return new OkResult();
