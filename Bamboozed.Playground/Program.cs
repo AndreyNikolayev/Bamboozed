@@ -1,12 +1,7 @@
-﻿using MailKit;
-using MailKit.Net.Imap;
-using MailKit.Search;
-using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Bamboozed.Application;
 using Bamboozed.Application.Interfaces;
-using MimeKit;
 
 namespace Bamboozed.Playground
 {
@@ -18,9 +13,7 @@ namespace Bamboozed.Playground
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
 
-            var timeOffService = serviceProvider.GetRequiredService<ITimeOffService>();
-
-            await timeOffService.Handle();
+            var timeOffService = serviceProvider.GetRequiredService<IPasswordService>();
         }
     }
 }

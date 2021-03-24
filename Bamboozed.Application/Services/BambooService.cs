@@ -9,14 +9,11 @@ namespace Bamboozed.Application.Services
 {
     public class BambooService : IBambooService
     {
-        private const string LoginSettingsKey = "BambooLogin";
-        private const string PasswordSettingsKey = "BambooPassword";
+        private readonly IPasswordService _passwordService;
 
-        private readonly ISettingsService _settingsService;
-
-        public BambooService(ISettingsService settingsService)
+        public BambooService(IPasswordService passwordService)
         {
-            _settingsService = settingsService;
+            _passwordService = passwordService;
         }
 
         public async Task ApproveTimeOff(TimeOffRequest timeOffRequest)
@@ -26,7 +23,7 @@ namespace Bamboozed.Application.Services
                 CookieContainer = new CookieContainer()
             };
 
-            if (!await Login(client))
+            if (!await Login(client, timeOffRequest.ApproverEmail))
             {
                 throw new Exception("Unauthorized to Bamboo");
             };
@@ -36,14 +33,16 @@ namespace Bamboozed.Application.Services
         }
 
 
-        private async Task<bool> Login(IRestClient client)
+        private async Task<bool> Login(IRestClient client, string approverEmail)
         {
+            var password = await _passwordService.Get(approverEmail);
+
             var request = new RestRequest("https://trinetix.bamboohr.com/login.php", Method.POST);
             request.AddHeader("origin", "https://trinetix.bamboohr.com");
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddParameter("tz", "Europe/Helsinki");
-            request.AddParameter("username", _settingsService.Get(LoginSettingsKey));
-            request.AddParameter("password", _settingsService.Get(PasswordSettingsKey));
+            request.AddParameter("username", approverEmail);
+            request.AddParameter("password", password);
             request.AddParameter("login", "Log in");
             await client.ExecuteAsync(request);
 
