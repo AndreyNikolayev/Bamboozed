@@ -13,7 +13,9 @@ namespace Bamboozed.Playground
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
 
-            var timeOffService = serviceProvider.GetRequiredService<IPasswordService>();
+            var timeOffService = serviceProvider.GetRequiredService<ITimeOffService>();
+
+            await timeOffService.Handle();
         }
     }
 }

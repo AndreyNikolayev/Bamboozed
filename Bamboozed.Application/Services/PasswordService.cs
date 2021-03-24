@@ -12,10 +12,13 @@ namespace Bamboozed.Application.Services
         private const string KeyVaultUrlKey = "KeyVaultUrl";
 
         private readonly ISettingsService _settingsService;
+        private readonly ICryptoService _cryptoService;
 
-        public PasswordService(ISettingsService settingsService)
+        public PasswordService(ISettingsService settingsService,
+            ICryptoService cryptoService)
         {
             _settingsService = settingsService;
+            _cryptoService = cryptoService;
         }
 
         public async Task<string> Get(string email)
@@ -24,7 +27,7 @@ namespace Bamboozed.Application.Services
 
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
             var kv = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-            var vaultResponse = await kv.GetSecretAsync(vaultBaseUrl, CryptoService.Encrypt(email));
+            var vaultResponse = await kv.GetSecretAsync(vaultBaseUrl, _cryptoService.Encrypt(email));
 
             return vaultResponse.Value;
         }
@@ -35,7 +38,7 @@ namespace Bamboozed.Application.Services
 
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
             var kv = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
-            return kv.SetSecretAsync(vaultBaseUrl, CryptoService.Encrypt(email), password);
+            return kv.SetSecretAsync(vaultBaseUrl, _cryptoService.Encrypt(email), password);
         }
     }
 }
