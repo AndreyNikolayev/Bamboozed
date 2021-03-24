@@ -51,11 +51,19 @@ namespace Bamboozed.Bot.Bots
                 }
             });
 
-            var result = await _httpClient.PostAsync(_requestEndpoint,
-                new StringContent(requestBody, Encoding.UTF8, "application/json"), cancellationToken);
+            try
+            {
+                var result = await _httpClient.PostAsync(_requestEndpoint,
+                    new StringContent(requestBody, Encoding.UTF8, "application/json"), cancellationToken);
 
-            var replyActivity = activity.CreateReply(await result.Content.ReadAsStringAsync());
-            await turnContext.SendActivityAsync(replyActivity, cancellationToken);
+                var replyActivity = activity.CreateReply(await result.Content.ReadAsStringAsync());
+                await turnContext.SendActivityAsync(replyActivity, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                var replyActivity = activity.CreateReply(e.Message);
+                await turnContext.SendActivityAsync(replyActivity, cancellationToken);
+            }
         }
     }
 }

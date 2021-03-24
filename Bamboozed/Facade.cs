@@ -43,9 +43,7 @@ namespace Bamboozed.AzureFunctions
                 var notificationRequest = JsonConvert.DeserializeObject<NotificationRequest>(bodyJson);
                 _conversationReferenceContext.Context = notificationRequest.ConversationReference;
 
-                var decodedCommandText = HttpUtility.HtmlDecode(notificationRequest.Message);
-
-                var command = _commandParser.GetCommand(decodedCommandText);
+                var command = _commandParser.GetCommand(notificationRequest.Message);
 
                 var commandResult = await _commandBus.Handle(command);
 
@@ -59,7 +57,7 @@ namespace Bamboozed.AzureFunctions
             {
                 log.LogError(ex, ex.Message);
 
-                return new OkObjectResult("Something went wrong");
+                return new OkObjectResult(ex.Message);
             }
         }
     }
