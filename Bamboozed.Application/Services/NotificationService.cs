@@ -22,7 +22,7 @@ namespace Bamboozed.Application.Services
             var endpoint = _settingsService.Get(NotificationEndpointKey);
 
             using var response = await HttpClient.PostAsync(endpoint,
-                new StringContent(message, Encoding.UTF8, "application/json"));
+                new StringContent("\"" + message + "\"", Encoding.UTF8, "application/json"));
 
             if (!response.IsSuccessStatusCode)
             {

@@ -47,7 +47,7 @@ namespace Bamboozed.Application.Services
         {
             var message = await folder.GetMessageAsync(messageId);
 
-            var request = await _requestParser.ParseRequest(message);
+            var request = _requestParser.ParseRequest(message);
 
             await _bambooService.ApproveTimeOff(request);
             await folder.AddFlagsAsync(messageId, MessageFlags.Seen, false);
