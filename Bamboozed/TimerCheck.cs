@@ -15,7 +15,7 @@ namespace Bamboozed.AzureFunctions
         }
 
         [FunctionName(nameof(TimerCheck))]
-        public Task Run([TimerTrigger("0 * */1 * * *")]TimerInfo myTimer, ILogger log)
+        public Task Run([TimerTrigger("0 0 * * * *")]TimerInfo myTimer, ILogger log)
         {
             return _timeOffService.Handle();
         }
