@@ -7,6 +7,6 @@ namespace Bamboozed.Application.Commands.Entities
     public class InputCodeCommand: ICommand
     {
         [Value(0, Required = true, HelpText = "Code from registration email")]
-        public int Code { get; set; }
+        public string Code { get; set; }
     }
 }
