@@ -30,7 +30,7 @@ namespace Bamboozed.Bot.Bots
         {
             var activity = turnContext.Activity as Activity;
 
-            if (activity.Type == "messageDelete")
+            if (string.IsNullOrWhiteSpace(activity.Text))
             {
                 return;
             }
