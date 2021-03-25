@@ -30,6 +30,11 @@ namespace Bamboozed.Bot.Bots
         {
             var activity = turnContext.Activity as Activity;
 
+            if (activity.Type == "messageDelete")
+            {
+                return;
+            }
+
             var conversationReference = activity.GetConversationReference();
 
             var sendMessage = string.Join(" ",activity.Text
