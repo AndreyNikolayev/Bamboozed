@@ -6,7 +6,7 @@ namespace Bamboozed.DAL.Entities
     public class User: TableEntity
     {
         public string Email => RowKey;
-        public string ConversationId;
+        public string ConversationId { get; set; }
         public string ConversationReferenceJson { get; set; }
         public int UserStatusId { get; set; }
         public string RegistrationCode { get; set; }

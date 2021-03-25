@@ -57,7 +57,7 @@ namespace Bamboozed.AzureFunctions
             {
                 log.LogError(ex, ex.Message);
 
-                return new OkObjectResult(ex.Message);
+                return new OkObjectResult("Something went wrong");
             }
         }
     }
