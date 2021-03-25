@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bamboozed.DAL\Bamboozed.DAL.csproj" />
+    <ProjectReference Include="..\Bamboozed.Domain\Bamboozed.Domain.csproj" />
   </ItemGroup>
 
 </Project>
