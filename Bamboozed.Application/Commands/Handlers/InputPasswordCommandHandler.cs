@@ -39,7 +39,7 @@ namespace Bamboozed.Application.Commands.Handlers
                 return new CommandResult
                 {
                     IsSuccess = false,
-                    Message = "Chat is not recognized. Please use 'register' command first"
+                    Message = "Chat is not recognized. Please use 'register' command first."
                 };
             }
 
@@ -48,7 +48,7 @@ namespace Bamboozed.Application.Commands.Handlers
                 return new CommandResult
                 {
                     IsSuccess = false,
-                    Message = "Registration code is sent to your mailbox. Please submit it with 'code' command before submitting the password"
+                    Message = "Registration code is sent to your mailbox. Please submit it with 'code' command before submitting the password."
                 };
             }
 
@@ -59,7 +59,7 @@ namespace Bamboozed.Application.Commands.Handlers
                 return new CommandResult
                 {
                     IsSuccess = true,
-                    Message = "Your password is changed successfully"
+                    Message = "Your password is changed successfully."
                 };
             }
 
@@ -70,7 +70,7 @@ namespace Bamboozed.Application.Commands.Handlers
             return new CommandResult
             {
                 IsSuccess = true,
-                Message = "Your password is submitted successfully"
+                Message = "Your password is submitted successfully."
             };
         }
     }
