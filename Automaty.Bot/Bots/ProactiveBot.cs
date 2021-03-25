@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Bamboozed.Domain;
@@ -38,10 +39,12 @@ namespace Bamboozed.Bot.Bots
                 .Select(p => p.Trim())
             );
 
+            var withoutHtmlMessage = Regex.Replace(sendMessage, "<.*?>", String.Empty);
+
             var requestBody = JsonConvert.SerializeObject(new NotificationRequest
             {
                 ConversationReference = conversationReference,
-                Message = sendMessage
+                Message = withoutHtmlMessage
             }, new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
