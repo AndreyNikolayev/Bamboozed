@@ -9,7 +9,7 @@ namespace Bamboozed.Application.Enums
     {
         [Description("Sick-leave")]
         SickLeave,
-        [Description("Day-off")]
+        [Description("Day-Off")]
         DayOff,
         Vacation
     }

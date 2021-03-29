@@ -13,9 +13,9 @@ namespace Bamboozed.Playground
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
 
-            var timeOffService = serviceProvider.GetRequiredService<IMailSenderService>();
+            var timeOffService = serviceProvider.GetRequiredService<ITimeOffService>();
 
-            await timeOffService.SendRegistrationCode("andrey.nikolayev@trinetix.com", "111111");
+            await timeOffService.Handle();
         }
     }
 }
