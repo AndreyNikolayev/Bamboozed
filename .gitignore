@@ -339,3 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /Bamboozed.Playground/Properties/launchSettings.json
+/Bamboozed/Properties/ServiceDependencies/BamboozedAzureFunctions20210324095609 - Zip Deploy/profile.arm.json
