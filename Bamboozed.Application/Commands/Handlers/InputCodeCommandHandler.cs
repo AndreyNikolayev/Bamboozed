@@ -3,9 +3,8 @@ using Bamboozed.Application.Commands.Entities;
 using Bamboozed.Application.Commands.Interfaces;
 using System.Threading.Tasks;
 using Bamboozed.Application.Context;
-using Bamboozed.DAL.Entities;
-using Bamboozed.DAL.Enums;
 using Bamboozed.DAL.Repository;
+using Bamboozed.Domain.User;
 
 namespace Bamboozed.Application.Commands.Handlers
 {
@@ -57,7 +56,7 @@ namespace Bamboozed.Application.Commands.Handlers
                 };
             }
 
-            user.UserStatus = UserStatus.RegistrationCodeSubmitted;
+            user.ChangeUserStatus(UserStatus.RegistrationCodeSubmitted);
 
             await _userRepository.Edit(user);
 

@@ -5,9 +5,8 @@ using Bamboozed.Application.Commands.Interfaces;
 using System.Threading.Tasks;
 using Bamboozed.Application.Context;
 using Bamboozed.Application.Services;
-using Bamboozed.DAL.Entities;
-using Bamboozed.DAL.Enums;
 using Bamboozed.DAL.Repository;
+using Bamboozed.Domain.User;
 using Newtonsoft.Json;
 
 namespace Bamboozed.Application.Commands.Handlers

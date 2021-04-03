@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bamboozed.Domain.Base;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Bamboozed.DAL.Repository
 {
-    public class Repository<T> : IRepository<T> where T : ITableEntity, new()
+    public class Repository<T> : IRepository<T> where T : Entity
     {
         private readonly CloudTableClient _tableClient;
+        private const string PartitionKey = "Bamboozed";
 
         public Repository(CloudTableClient tableClient)
         {
@@ -17,19 +20,30 @@ namespace Bamboozed.DAL.Repository
 
         public Task Add(T entity)
         {
-            entity.Timestamp = DateTimeOffset.UtcNow;
-            return Execute(TableOperation.Insert(entity));
+            var adapter = new TableEntityAdapter<T>(entity, PartitionKey, entity.Id)
+            {
+                Timestamp = DateTimeOffset.UtcNow
+            };
+            return Execute(TableOperation.Insert(adapter));
         }
 
         public Task Delete(T entity)
         {
-            return Execute(TableOperation.Delete(entity));
+            var adapter = new TableEntityAdapter<T>(entity, PartitionKey, entity.Id)
+            {
+                ETag = "*"
+            };
+            return Execute(TableOperation.Delete(adapter));
         }
 
         public Task Edit(T entity)
         {
-            entity.Timestamp = DateTimeOffset.UtcNow;
-            return Execute(TableOperation.Replace(entity));
+            var adapter = new TableEntityAdapter<T>(entity, PartitionKey, entity.Id)
+            {
+                Timestamp = DateTimeOffset.UtcNow,
+                ETag = "*"
+            };
+            return Execute(TableOperation.Replace(adapter));
         }
 
         private async Task Execute(TableOperation operation)
@@ -40,14 +54,7 @@ namespace Bamboozed.DAL.Repository
 
         public async Task<T> Get(string partitionKey, string rowKey)
         {
-            var query = new TableQuery<T>().Where(
-                TableQuery.CombineFilters(
-                TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, rowKey),
-                TableOperators.And,
-                TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, partitionKey)
-                ));
-
-            var results = await ExecuteQuery(query);
+            var results = await Get(new FilterRequest(partitionKey, rowKey));
 
             return results.FirstOrDefault();
         }
@@ -83,12 +90,9 @@ namespace Bamboozed.DAL.Repository
 
         public Task<IEnumerable<T>> Get(FilterRequest filterRequest = null)
         {
-            var query = new TableQuery<T>();
+            var query = new TableQuery();
 
-            if (filterRequest == null)
-            {
-                return ExecuteQuery(query);
-            }
+            if (filterRequest == null) return ExecuteQuery(query);
 
             var filterConditions = new List<string>();
 
@@ -109,16 +113,21 @@ namespace Bamboozed.DAL.Repository
             return ExecuteQuery(query);
         }
 
-        private async Task<IEnumerable<T>> ExecuteQuery(TableQuery<T> query)
+        private async Task<IEnumerable<T>> ExecuteQuery(TableQuery query)
         {
             var table = await GetTable();
             var result = new List<T>();
 
             TableContinuationToken continuationToken = null;
+
             do
             {
                 var tableQueryResult = await table.ExecuteQuerySegmentedAsync(query, continuationToken);
-                result.AddRange(tableQueryResult.Results);
+                result.AddRange(tableQueryResult.Results
+                    .Select(p => 
+                        TableEntity.ConvertBack<T>(p.Properties, new OperationContext())
+                        )
+                );
 
                 continuationToken = tableQueryResult.ContinuationToken;
             } while (continuationToken != null);

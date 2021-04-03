@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Bamboozed.Application;
 using Bamboozed.Application.Services;
+using Bamboozed.DAL.Repository;
+using Bamboozed.Domain.User;
 
 namespace Bamboozed.Playground
 {
@@ -13,9 +15,9 @@ namespace Bamboozed.Playground
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
 
-            var timeOffService = serviceProvider.GetRequiredService<TimeOffService>();
+            var userRepository = serviceProvider.GetRequiredService<IRepository<User>>();
 
-            await timeOffService.Handle();
+            var a = await userRepository.Get();
         }
     }
 }

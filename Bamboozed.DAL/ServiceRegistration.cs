@@ -1,6 +1,7 @@
 ﻿using System;
-using Bamboozed.DAL.Entities;
 using Bamboozed.DAL.Repository;
+using Bamboozed.Domain.Base;
+using Bamboozed.Domain.User;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
@@ -16,7 +17,7 @@ namespace Bamboozed.DAL
             return services;
         }
 
-        private static Repository<T> RegisterRepository<T>() where T : ITableEntity, new()
+        private static Repository<T> RegisterRepository<T>() where T : Entity
         {
             var storageAccount =
                 CloudStorageAccount.Parse(Environment.GetEnvironmentVariable("AzureWebJobsStorage"));

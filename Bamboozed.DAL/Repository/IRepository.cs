@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.WindowsAzure.Storage.Table;
+using Bamboozed.Domain.Base;
 
 namespace Bamboozed.DAL.Repository
 {
-    public interface IRepository<T> where T : ITableEntity
+    public interface IRepository<T> where T : Entity
     {
         Task Add(T entity);
         Task Edit(T entity);
