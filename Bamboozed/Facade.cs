@@ -1,11 +1,10 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Web;
 using Bamboozed.Application.Commands.Exceptions;
 using Bamboozed.Application.Commands.Interfaces;
-using Bamboozed.Application.Context.Interfaces;
-using Bamboozed.Application.Interfaces;
+using Bamboozed.Application.Commands.Services;
+using Bamboozed.Application.Context;
 using Bamboozed.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,12 +18,12 @@ namespace Bamboozed.AzureFunctions
     public class Facade
     {
         private readonly ICommandParser _commandParser;
-        private readonly ICommandBus _commandBus;
-        private readonly IConversationReferenceContext _conversationReferenceContext;
+        private readonly CommandBus _commandBus;
+        private readonly ConversationReferenceContext _conversationReferenceContext;
 
         public Facade(ICommandParser commandParser,
-            ICommandBus commandBus,
-            IConversationReferenceContext conversationReferenceContext)
+            CommandBus commandBus,
+            ConversationReferenceContext conversationReferenceContext)
         {
             _commandParser = commandParser;
             _commandBus = commandBus;

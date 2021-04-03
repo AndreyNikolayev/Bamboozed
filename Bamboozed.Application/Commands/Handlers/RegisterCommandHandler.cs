@@ -3,8 +3,8 @@ using System.Linq;
 using Bamboozed.Application.Commands.Entities;
 using Bamboozed.Application.Commands.Interfaces;
 using System.Threading.Tasks;
-using Bamboozed.Application.Context.Interfaces;
-using Bamboozed.Application.Interfaces;
+using Bamboozed.Application.Context;
+using Bamboozed.Application.Services;
 using Bamboozed.DAL.Entities;
 using Bamboozed.DAL.Enums;
 using Bamboozed.DAL.Repository;
@@ -14,20 +14,20 @@ namespace Bamboozed.Application.Commands.Handlers
 {
     public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
     {
-        private readonly IReadonlyConversationReferenceContext _conversationReferenceContext;
+        private readonly ReadonlyConversationReferenceContext _conversationReferenceContext;
         private readonly IRepository<User> _userRepository;
-        private readonly IMailSenderService _mailSenderService;
+        private readonly MailSenderService _mailSenderService;
 
-        public RegisterCommandHandler(IReadonlyConversationReferenceContext conversationReferenceContext,
+        public RegisterCommandHandler(ReadonlyConversationReferenceContext conversationReferenceContext,
             IRepository<User> userRepository,
-            IMailSenderService mailSenderService)
+            MailSenderService mailSenderService)
         {
             _conversationReferenceContext = conversationReferenceContext;
             _userRepository = userRepository;
             _mailSenderService = mailSenderService;
         }
 
-        public async Task<ICommandResult> Handle(RegisterCommand command)
+        public async Task<CommandResult> Handle(RegisterCommand command)
         {
             var users = await _userRepository.Get();
 

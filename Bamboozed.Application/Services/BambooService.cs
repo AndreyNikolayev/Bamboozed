@@ -7,7 +7,7 @@ using RestSharp;
 
 namespace Bamboozed.Application.Services
 {
-    public class BambooService : IBambooService
+    public class BambooService
     {
         private readonly IPasswordService _passwordService;
 

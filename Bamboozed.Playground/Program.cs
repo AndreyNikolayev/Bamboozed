@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Bamboozed.Application;
-using Bamboozed.Application.Interfaces;
+using Bamboozed.Application.Services;
 
 namespace Bamboozed.Playground
 {
@@ -13,7 +13,7 @@ namespace Bamboozed.Playground
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
 
-            var timeOffService = serviceProvider.GetRequiredService<ITimeOffService>();
+            var timeOffService = serviceProvider.GetRequiredService<TimeOffService>();
 
             await timeOffService.Handle();
         }

@@ -9,7 +9,7 @@ namespace Bamboozed.Application.Services
     using System.Security.Cryptography;
     using System.Text;
 
-    public class CryptoService: ICryptoService
+    public class CryptoService
     {
         private const string CryptoSaltKey = "CryptoSalt";
         private const string CryptoSecretKey = "CryptoSecret";

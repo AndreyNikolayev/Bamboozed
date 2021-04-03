@@ -1,17 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Bamboozed.Application.Interfaces;
-using MailKit;
-using MailKit.Net.Imap;
 using MailKit.Net.Smtp;
-using MailKit.Search;
 using MailKit.Security;
 using MimeKit;
 
 namespace Bamboozed.Application.Services
 {
-    public class MailSenderService : IMailSenderService
+    public class MailSenderService
     {
         private const string LoginSettingsKey = "EmailLogin";
         private const string PasswordSettingsKey = "EmailPassword";

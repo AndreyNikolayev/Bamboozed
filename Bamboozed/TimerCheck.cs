@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Bamboozed.Application.Interfaces;
+using Bamboozed.Application.Services;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
@@ -7,9 +7,9 @@ namespace Bamboozed.AzureFunctions
 {
     public class TimerCheck
     {
-        private readonly ITimeOffService _timeOffService;
+        private readonly TimeOffService _timeOffService;
 
-        public TimerCheck(ITimeOffService timeOffService)
+        public TimerCheck(TimeOffService timeOffService)
         {
             _timeOffService = timeOffService;
         }

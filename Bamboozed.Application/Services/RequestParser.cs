@@ -2,16 +2,14 @@
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Bamboozed.Application.Entities;
 using Bamboozed.Application.Enums;
 using Bamboozed.Application.Extensions;
-using Bamboozed.Application.Interfaces;
 using MimeKit;
 
 namespace Bamboozed.Application.Services
 {
-    public class RequestParser: IRequestParser
+    public class RequestParser
     {
         private readonly Regex _requestorNameRegex = new Regex("<title>(.*) requested time off[^<]*</title>");
         private readonly Regex _timeOffTypeRegex = new Regex("\\d+ days? of (\\S*)");

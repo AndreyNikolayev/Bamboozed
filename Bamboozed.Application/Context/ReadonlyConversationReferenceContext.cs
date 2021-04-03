@@ -1,14 +1,13 @@
 ﻿using System;
-using Bamboozed.Application.Context.Interfaces;
 using Microsoft.Bot.Schema;
 
-namespace Bamboozed.Application.Context.Contexts
+namespace Bamboozed.Application.Context
 {
-    public class ReadonlyConversationReferenceContext: IReadonlyConversationReferenceContext
+    public class ReadonlyConversationReferenceContext
     {
-        private readonly IConversationReferenceContext _conversationReferenceContext;
+        private readonly ConversationReferenceContext _conversationReferenceContext;
 
-        public ReadonlyConversationReferenceContext(IConversationReferenceContext conversationReferenceContext)
+        public ReadonlyConversationReferenceContext(ConversationReferenceContext conversationReferenceContext)
         {
             _conversationReferenceContext = conversationReferenceContext;
         }

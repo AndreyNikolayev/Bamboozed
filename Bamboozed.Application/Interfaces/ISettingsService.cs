@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Bamboozed.Application.Entities;
-
-namespace Bamboozed.Application.Interfaces
+﻿namespace Bamboozed.Application.Interfaces
 {
     public interface ISettingsService
     {

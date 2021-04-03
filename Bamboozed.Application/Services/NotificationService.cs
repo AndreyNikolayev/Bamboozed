@@ -4,13 +4,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Bamboozed.Application.Interfaces;
 using Bamboozed.Domain;
-using Microsoft.Bot.Schema;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace Bamboozed.Application.Services
 {
-    public class NotificationService : INotificationService
+    public class NotificationService
     {
         private static readonly HttpClient HttpClient = new HttpClient();
         private const string NotificationEndpointKey = "NotificationEndpoint";

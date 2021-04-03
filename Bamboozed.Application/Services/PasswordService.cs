@@ -1,6 +1,4 @@
-﻿using System;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Bamboozed.Application.Interfaces;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
@@ -12,10 +10,10 @@ namespace Bamboozed.Application.Services
         private const string KeyVaultUrlKey = "KeyVaultUrl";
 
         private readonly ISettingsService _settingsService;
-        private readonly ICryptoService _cryptoService;
+        private readonly CryptoService _cryptoService;
 
         public PasswordService(ISettingsService settingsService,
-            ICryptoService cryptoService)
+            CryptoService cryptoService)
         {
             _settingsService = settingsService;
             _cryptoService = cryptoService;

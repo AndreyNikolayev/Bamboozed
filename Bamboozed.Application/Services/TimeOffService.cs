@@ -8,7 +8,7 @@ using MailKit.Search;
 
 namespace Bamboozed.Application.Services
 {
-    public class TimeOffService : ITimeOffService
+    public class TimeOffService
     {
         private const string TimeOffLabel = "Bamboo-TimeOff";
         private const string LoginSettingsKey = "EmailLogin";
@@ -16,14 +16,15 @@ namespace Bamboozed.Application.Services
         private const string ImapHost = "imap.gmail.com";
         private const int Port = 993;
 
-        private readonly IRequestParser _requestParser;
-        private readonly IBambooService _bambooService;
-        private readonly INotificationService _notificationService;
+        private readonly RequestParser _requestParser;
+        private readonly BambooService _bambooService;
+        private readonly NotificationService _notificationService;
         private readonly ISettingsService _settingsService;
 
-        public TimeOffService(IRequestParser requestParser,
-            IBambooService bambooService,
-            INotificationService notificationService, ISettingsService settingsService)
+        public TimeOffService(RequestParser requestParser,
+            BambooService bambooService,
+            NotificationService notificationService,
+            ISettingsService settingsService)
         {
             _requestParser = requestParser;
             _bambooService = bambooService;

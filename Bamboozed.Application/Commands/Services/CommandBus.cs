@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Bamboozed.Application.Commands.Entities;
 using Bamboozed.Application.Commands.Interfaces;
 
 namespace Bamboozed.Application.Commands.Services
 {
-    public class CommandBus : ICommandBus
+    public class CommandBus
     {
         private readonly IServiceProvider _serviceProvider;
 
@@ -13,7 +14,7 @@ namespace Bamboozed.Application.Commands.Services
             _serviceProvider = serviceProvider;
         }
 
-        public Task<ICommandResult> Handle(ICommand command)
+        public Task<CommandResult> Handle(ICommand command)
         {
             var handlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
 
@@ -31,7 +32,7 @@ namespace Bamboozed.Application.Commands.Services
                 throw new Exception($"Handle function for command handler of {command.GetType().Name} is not found");
             }
 
-            return (Task<ICommandResult>)method.Invoke(handler, new[] { command });
+            return (Task<CommandResult>)method.Invoke(handler, new[] { command });
         }
     }
 }

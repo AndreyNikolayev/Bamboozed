@@ -2,7 +2,7 @@
 using Bamboozed.Application.Commands.Entities;
 using Bamboozed.Application.Commands.Interfaces;
 using System.Threading.Tasks;
-using Bamboozed.Application.Context.Interfaces;
+using Bamboozed.Application.Context;
 using Bamboozed.Application.Interfaces;
 using Bamboozed.DAL.Entities;
 using Bamboozed.DAL.Enums;
@@ -12,12 +12,12 @@ namespace Bamboozed.Application.Commands.Handlers
 {
     public class InputPasswordCommandHandler : ICommandHandler<InputPasswordCommand>
     {
-        private readonly IReadonlyConversationReferenceContext _conversationReferenceContext;
+        private readonly ReadonlyConversationReferenceContext _conversationReferenceContext;
         private readonly IRepository<User> _userRepository;
         private readonly IPasswordService _passwordService;
 
         public InputPasswordCommandHandler(
-            IReadonlyConversationReferenceContext conversationReferenceContext,
+            ReadonlyConversationReferenceContext conversationReferenceContext,
             IRepository<User> userRepository,
             IPasswordService passwordService)
         {
@@ -26,7 +26,7 @@ namespace Bamboozed.Application.Commands.Handlers
             _passwordService = passwordService;
         }
 
-        public async Task<ICommandResult> Handle(InputPasswordCommand command)
+        public async Task<CommandResult> Handle(InputPasswordCommand command)
         {
             var userConversationId = _conversationReferenceContext.Context.User.Id;
 

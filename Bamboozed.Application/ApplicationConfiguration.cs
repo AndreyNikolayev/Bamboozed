@@ -2,8 +2,7 @@
 using Bamboozed.Application.Commands.Handlers;
 using Bamboozed.Application.Commands.Interfaces;
 using Bamboozed.Application.Commands.Services;
-using Bamboozed.Application.Context.Contexts;
-using Bamboozed.Application.Context.Interfaces;
+using Bamboozed.Application.Context;
 using Bamboozed.Application.Interfaces;
 using Bamboozed.Application.Services;
 using Bamboozed.DAL;
@@ -19,18 +18,18 @@ namespace Bamboozed.Application
 
             services.AddScoped<ISettingsService, SettingsService>();
             services.AddScoped<IPasswordService, PasswordService>();
-            services.AddScoped<IBambooService, BambooService>();
-            services.AddScoped<INotificationService, NotificationService>();
-            services.AddScoped<IRequestParser, RequestParser>();
-            services.AddScoped<ITimeOffService, TimeOffService>();
-            services.AddScoped<ICryptoService, CryptoService>();
-            services.AddScoped<IMailSenderService, MailSenderService>();
+            services.AddScoped<BambooService>();
+            services.AddScoped<NotificationService>();
+            services.AddSingleton<RequestParser>();
+            services.AddScoped<TimeOffService>();
+            services.AddScoped<CryptoService>();
+            services.AddScoped<MailSenderService>();
 
-            services.AddScoped<IConversationReferenceContext, ConversationReferenceContext>();
-            services.AddScoped<IReadonlyConversationReferenceContext, ReadonlyConversationReferenceContext>();
+            services.AddScoped<ConversationReferenceContext>();
+            services.AddScoped<ReadonlyConversationReferenceContext>();
 
             services.AddScoped<ICommandParser, CommandParser>();
-            services.AddScoped<ICommandBus, CommandBus>();
+            services.AddScoped<CommandBus>();
 
             services.AddScoped<ICommandHandler<RegisterCommand>, RegisterCommandHandler>();
             services.AddScoped<ICommandHandler<InputCodeCommand>, InputCodeCommandHandler>();

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Bot.Schema;
-using System;
 
 namespace Bamboozed.Domain
 {
