@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Bamboozed.Application;
-using Bamboozed.DAL.Repository;
-using Bamboozed.Domain.User;
+using Bamboozed.Application.Services;
+using Bamboozed.Domain;
+using Microsoft.Bot.Schema;
 
 namespace Bamboozed.Playground
 {
@@ -14,9 +15,17 @@ namespace Bamboozed.Playground
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
 
-            var userRepository = serviceProvider.GetRequiredService<IRepository<User>>();
+            var notificationService = serviceProvider.GetRequiredService<NotificationService>();
 
-            var a = await userRepository.Get();
+            var conversationReference = new ConversationReference(
+               // user: new ChannelAccount("29:10N-S1JIYcRAn3ScGF6wz72lOPSr8iHexFX7IIEuHc_tuTxsqfp7tM08VgZo9V-Sx"),
+               // bot: new ChannelAccount("28:129fa032-ec89-4f2d-b23b-88b852be9030"),
+                conversation: new ConversationAccount(id: "29:10N-S1JIYcRAn3ScGF6wz72lOPSr8iHexFX7IIEuHc_tuTxsqfp7tM08VgZo9V-Sx"),
+                serviceUrl: "https://smba.trafficmanager.net/apis/"
+              //  channelId:"skype"
+            );
+
+            await notificationService.Notify(new NotificationRequest(conversationReference.Conversation.Id, "lol"));
         }
     }
 }

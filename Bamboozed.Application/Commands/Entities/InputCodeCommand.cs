@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Bamboozed.Application.Commands.Interfaces;
-using Bamboozed.Application.Context;
 using Bamboozed.Application.Events;
 using Bamboozed.Application.Events.Events;
 using Bamboozed.DAL.Repository;
@@ -17,20 +16,18 @@ namespace Bamboozed.Application.Commands.Entities
     {
         [Value(0, Required = true, HelpText = "Code from registration email")]
         public string Code { get; set; }
+        public string ConversationId { get; set; }
     }
 
     public class InputCodeCommandHandler : ICommandHandler<InputCodeCommand>
     {
-        private readonly ReadonlyConversationReferenceContext _conversationReferenceContext;
         private readonly IRepository<User> _userRepository;
         private readonly DomainEventBus _domainEventBus;
 
         public InputCodeCommandHandler(
-            ReadonlyConversationReferenceContext conversationReferenceContext,
             IRepository<User> userRepository,
             DomainEventBus domainEventBus)
         {
-            _conversationReferenceContext = conversationReferenceContext;
             _userRepository = userRepository;
             _domainEventBus = domainEventBus;
         }
@@ -40,13 +37,13 @@ namespace Bamboozed.Application.Commands.Entities
             return await _userRepository.Get()
                 .ToResultTask()
                 .Map(users => users
-                    .FirstOrDefault(p => p.ConversationId == _conversationReferenceContext.Context.User.Id)
+                    .FirstOrDefault(p => p.ConversationId == command.ConversationId)
                 )
                 .Ensure(user => user != null, "Chat is not recognized. Please use 'register' command first.")
                 .Check(user => user.SubmitRegistrationCode(command.Code))
                 .Tap(user => _userRepository.Edit(user))
                 .Tap(user => _domainEventBus.Dispatch(new RegistrationCodeEnteredEvent(user.Email)))
-                .OnFailure(error => _domainEventBus.Dispatch(new RegistrationStepFailedEvent(_conversationReferenceContext.Context, error)))
+                .OnFailure(error => _domainEventBus.Dispatch(new RegistrationStepFailedEvent(command.ConversationId, error)))
                 .Bind(_ => Result.Success());
         }
     }

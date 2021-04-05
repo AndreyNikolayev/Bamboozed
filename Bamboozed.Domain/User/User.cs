@@ -6,17 +6,15 @@ namespace Bamboozed.Domain.User
     {
         public string Email { get; private set; }
         public string ConversationId { get; private set; }
-        public string ConversationReferenceJson { get; private set; }
         public UserStatus UserStatus { get; private set; }
         public string RegistrationCode { get; private set; }
 
         public User() { }
 
-        public User(string email, string conversationId, string conversationReferenceJson, string registrationCode): base(email)
+        public User(string email, string conversationId, string registrationCode): base(email)
         {
             Email = email;
             ConversationId = conversationId;
-            ConversationReferenceJson = conversationReferenceJson;
             UserStatus = UserStatus.RegistrationCodeSent;
             RegistrationCode = registrationCode;
         }

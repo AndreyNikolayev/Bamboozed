@@ -1,7 +1,6 @@
 ﻿using Bamboozed.Application.Commands.Entities;
 using Bamboozed.Application.Commands.Interfaces;
 using Bamboozed.Application.Commands.Services;
-using Bamboozed.Application.Context;
 using Bamboozed.Application.Events;
 using Bamboozed.Application.Events.Events;
 using Bamboozed.Application.Events.Interfaces;
@@ -26,9 +25,6 @@ namespace Bamboozed.Application
             services.AddScoped<TimeOffService>();
             services.AddScoped<CryptoService>();
             services.AddScoped<MailSenderService>();
-
-            services.AddScoped<ConversationReferenceContext>();
-            services.AddScoped<ReadonlyConversationReferenceContext>();
 
             services.AddScoped<ICommandParser, CommandParser>();
             services.AddScoped<CommandBus>();

@@ -3,18 +3,17 @@ using System.Threading.Tasks;
 using Bamboozed.Application.Events.Interfaces;
 using Bamboozed.Application.Services;
 using Bamboozed.Domain;
-using Microsoft.Bot.Schema;
 
 namespace Bamboozed.Application.Events.Events
 {
     public sealed class RegistrationStepFailedEvent: IDomainEvent
     {
-        public ConversationReference ConversationReference { get; }
+        public string ConversationId { get; }
         public string Message { get; }
 
-        public RegistrationStepFailedEvent(ConversationReference conversationReference, string message)
+        public RegistrationStepFailedEvent(string conversationId, string message)
         {
-            ConversationReference = conversationReference ?? throw new ArgumentNullException($"{nameof(conversationReference)} cannot be null");
+            ConversationId = conversationId ?? throw new ArgumentNullException($"{nameof(conversationId)} cannot be null");
             Message = message ?? throw new ArgumentNullException($"{nameof(message)} cannot be null");
         }
     }
@@ -30,7 +29,7 @@ namespace Bamboozed.Application.Events.Events
 
         public Task Handle(RegistrationStepFailedEvent domainEvent)
         {
-            return _notificationService.Notify(new NotificationRequest(domainEvent.ConversationReference,
+            return _notificationService.Notify(new NotificationRequest(domainEvent.ConversationId,
                 domainEvent.Message));
         }
     }

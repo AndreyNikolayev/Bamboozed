@@ -6,7 +6,6 @@ using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector.Authentication;
 using Microsoft.Bot.Schema;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 
 namespace Bamboozed.Bot.Controllers
 {
@@ -16,20 +15,25 @@ namespace Bamboozed.Bot.Controllers
     {
         private readonly IBotFrameworkHttpAdapter _adapter;
         private readonly string _appId;
+        private readonly string _serviceUrl;
 
         public NotifyController(IBotFrameworkHttpAdapter adapter, IConfiguration configuration)
         {
             _adapter = adapter;
             _appId = configuration["MicrosoftAppId"] ?? string.Empty;
+            _appId = configuration["ServiceUrl"] ?? string.Empty;
         }
 
         public async Task<IActionResult> Get([FromBody] NotificationRequest request)
         {
 
-            AppCredentials.TrustServiceUrl(request.ConversationReference.ServiceUrl);
+            AppCredentials.TrustServiceUrl(_serviceUrl);
 
             await ((BotAdapter)_adapter).ContinueConversationAsync(_appId,
-                request.ConversationReference,
+                new ConversationReference(
+                    conversation: new ConversationAccount(id: request.ConversationId),
+                    serviceUrl: _serviceUrl
+                ),
                 async (turnContext, cancellationToken) => await turnContext.SendActivityAsync(request.Message, cancellationToken: cancellationToken),
             default);
 

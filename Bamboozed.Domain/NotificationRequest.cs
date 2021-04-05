@@ -1,16 +1,15 @@
 ﻿using System;
-using Microsoft.Bot.Schema;
 
 namespace Bamboozed.Domain
 {
     public class NotificationRequest
     {
-        public ConversationReference ConversationReference { get; }
+        public string ConversationId { get; }
         public string Message { get; }
 
-        public NotificationRequest(ConversationReference conversationReference, string message)
+        public NotificationRequest(string conversationId, string message)
         {
-            ConversationReference = conversationReference ?? throw new ArgumentNullException($"{nameof(conversationReference)} cannot be null");
+            ConversationId = conversationId ?? throw new ArgumentNullException($"{nameof(conversationId)} cannot be null");
             Message = message ?? throw new ArgumentNullException($"{nameof(message)} cannot be null");
         }
     }

@@ -1,11 +1,12 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using Bamboozed.Application.Commands.Exceptions;
 using Bamboozed.Application.Commands.Interfaces;
 using Bamboozed.Application.Commands.Services;
-using Bamboozed.Application.Context;
 using Bamboozed.Domain;
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -19,15 +20,12 @@ namespace Bamboozed.AzureFunctions
     {
         private readonly ICommandParser _commandParser;
         private readonly CommandBus _commandBus;
-        private readonly ConversationReferenceContext _conversationReferenceContext;
 
         public Facade(ICommandParser commandParser,
-            CommandBus commandBus,
-            ConversationReferenceContext conversationReferenceContext)
+            CommandBus commandBus)
         {
             _commandParser = commandParser;
             _commandBus = commandBus;
-            _conversationReferenceContext = conversationReferenceContext;
         }
 
         [FunctionName(nameof(Facade))]
@@ -40,9 +38,14 @@ namespace Bamboozed.AzureFunctions
                 var bodyJson = await reader.ReadToEndAsync();
 
                 var notificationRequest = JsonConvert.DeserializeObject<NotificationRequest>(bodyJson);
-                _conversationReferenceContext.Context = notificationRequest.ConversationReference;
 
                 var command = _commandParser.GetCommand(notificationRequest.Message);
+
+                Maybe<PropertyInfo> conversationField = command.GetType().GetProperty("ConversationId");
+                if (conversationField.HasValue)
+                {
+                    conversationField.Value.SetValue(command, notificationRequest.ConversationId, null);
+                }
 
                 await _commandBus.Handle(command);
 

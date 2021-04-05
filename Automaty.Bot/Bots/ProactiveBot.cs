@@ -47,7 +47,7 @@ namespace Bamboozed.Bot.Bots
             var withoutHtmlMessage = Regex.Replace(sendMessage, "<.*?>", String.Empty);
 
             var requestBody = JsonConvert.SerializeObject(new NotificationRequest(
-                conversationReference,
+                conversationReference.Conversation.Id,
                 withoutHtmlMessage
             ), new JsonSerializerSettings
             {

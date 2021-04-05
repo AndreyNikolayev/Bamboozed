@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Bamboozed.Application.Commands.Interfaces;
-using Bamboozed.Application.Context;
 using Bamboozed.Application.Events;
 using Bamboozed.Application.Events.Events;
 using Bamboozed.Application.Interfaces;
@@ -18,22 +17,20 @@ namespace Bamboozed.Application.Commands.Entities
     {
         [Value(0, Required = true, HelpText = "Your Bamboo password")]
         public string Password { get; set; }
+        public string ConversationId { get; set; }
     }
 
     public class InputPasswordCommandHandler : ICommandHandler<InputPasswordCommand>
     {
-        private readonly ReadonlyConversationReferenceContext _conversationReferenceContext;
         private readonly IRepository<User> _userRepository;
         private readonly IPasswordService _passwordService;
         private readonly DomainEventBus _domainEventBus;
 
         public InputPasswordCommandHandler(
-            ReadonlyConversationReferenceContext conversationReferenceContext,
             IRepository<User> userRepository,
             IPasswordService passwordService,
             DomainEventBus domainEventBus)
         {
-            _conversationReferenceContext = conversationReferenceContext;
             _userRepository = userRepository;
             _passwordService = passwordService;
             _domainEventBus = domainEventBus;
@@ -44,14 +41,14 @@ namespace Bamboozed.Application.Commands.Entities
             return await _userRepository.Get()
                 .ToResultTask()
                 .Map(users => users
-                    .FirstOrDefault(p => p.ConversationId == _conversationReferenceContext.Context.User.Id)
+                    .FirstOrDefault(p => p.ConversationId == command.ConversationId)
                 )
                 .Ensure(user => user != null, "Chat is not recognized. Please use 'register' command first.")
                 .CheckIf(user => user.UserStatus != UserStatus.Active, user => user.Activate())
                 .Tap(user => _passwordService.Set(user.Email, command.Password))
                 .Tap(user => _userRepository.Edit(user))
                 .Tap(user => _domainEventBus.Dispatch(new PasswordSubmittedEvent(user.Email)))
-                .OnFailure(error => _domainEventBus.Dispatch(new RegistrationStepFailedEvent(_conversationReferenceContext.Context, error)))
+                .OnFailure(error => _domainEventBus.Dispatch(new RegistrationStepFailedEvent(command.ConversationId, error)))
                 .Bind(_ => Result.Success());
         }
     }

@@ -8,8 +8,6 @@ using Bamboozed.Domain.User;
 using MailKit;
 using MailKit.Net.Imap;
 using MailKit.Search;
-using Microsoft.Bot.Schema;
-using Newtonsoft.Json;
 
 namespace Bamboozed.Application.Services
 {
@@ -63,7 +61,7 @@ namespace Bamboozed.Application.Services
             await _bambooService.ApproveTimeOff(request);
             await folder.AddFlagsAsync(messageId, MessageFlags.Seen, false);
             await _notificationService.Notify(new NotificationRequest(
-                JsonConvert.DeserializeObject<ConversationReference>(user.Value.ConversationReferenceJson),
+                user.Value.ConversationId,
                 request.ApprovedMessage));
         }
 
