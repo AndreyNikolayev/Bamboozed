@@ -1,6 +1,4 @@
-﻿using System;
-using Bamboozed.Domain.Extensions;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 
 namespace Bamboozed.Domain.User
 {
@@ -27,29 +25,32 @@ namespace Bamboozed.Domain.User
         /// </summary>
         public override string Id => Email;
 
-        public Result ChangeUserStatus(UserStatus status)
+        public Result SubmitRegistrationCode(string code)
         {
-            if (UserStatus == status)
+            if (UserStatus != UserStatus.RegistrationCodeSent)
             {
-                throw new ArgumentException($"User status is already set to {status.GetDescription()}");
+                return Result.Failure("Code is already submitted.");
             }
 
-            if (status == UserStatus.RegistrationCodeSent)
+            if (code != RegistrationCode)
             {
-                return Result.Failure($"Status cannot be changed back to {UserStatus.RegistrationCodeSent.GetDescription()}");
+                return Result.Failure("Wrong code.");
             }
 
-            if (status == UserStatus.Active)
+            UserStatus = UserStatus.RegistrationCodeSubmitted;
+
+            return Result.Success();
+        }
+
+        public Result Activate()
+        {
+            if (UserStatus != UserStatus.RegistrationCodeSubmitted)
             {
-                return Result.Failure($"Status cannot be changed from {UserStatus.Active.GetDescription()}");
+                return Result.Failure("Registration code is sent to your mailbox. Please submit it with 'code' command before submitting the password.");
             }
 
-            if (UserStatus == UserStatus.RegistrationCodeSent && status == UserStatus.Active)
-            {
-                return Result.Failure($"Status cannot be changed to {UserStatus.Active.GetDescription()} from {UserStatus.RegistrationCodeSent.GetDescription()}");
-            }
+            UserStatus = UserStatus.Active;
 
-            UserStatus = status;
             return Result.Success();
         }
     }

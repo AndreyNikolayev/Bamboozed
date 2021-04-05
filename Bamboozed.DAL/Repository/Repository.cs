@@ -52,58 +52,30 @@ namespace Bamboozed.DAL.Repository
             await table.ExecuteAsync(operation);
         }
 
-        public async Task<T> Get(string partitionKey, string rowKey)
+        public async Task<Maybe<T>> GetById(string id)
         {
-            var results = await Get(new FilterRequest(partitionKey, rowKey));
+            var entities = await Get(id);
 
-            return results.FirstOrDefault();
+            return entities.FirstOrDefault();
         }
 
-        public async Task<T> First(FilterRequest filterRequest = null)
+        public Task<IEnumerable<T>> Get()
         {
-            var result = await Get(filterRequest);
-            return result.First();
+            return Get(null);
         }
 
-        public async Task<T> First(string partitionKey)
-        {
-            var result = await Get(partitionKey);
-            return result.First();
-        }
-
-        public async Task<T> FirstOrDefault(FilterRequest filterRequest = null)
-        {
-            var result = await Get(filterRequest);
-            return result.FirstOrDefault();
-        }
-
-        public async Task<T> FirstOrDefault(string partitionKey)
-        {
-            var result = await Get(partitionKey);
-            return result.FirstOrDefault();
-        }
-
-        public Task<IEnumerable<T>> Get(string partitionKey)
-        {
-            return Get(new FilterRequest(partitionKey));
-        }
-
-        public Task<IEnumerable<T>> Get(FilterRequest filterRequest = null)
+        private Task<IEnumerable<T>> Get(string id)
         {
             var query = new TableQuery();
 
-            if (filterRequest == null) return ExecuteQuery(query);
-
-            var filterConditions = new List<string>();
-
-            if (filterRequest.PartitionKey != null)
+            var filterConditions = new List<string>
             {
-                filterConditions.Add(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, filterRequest.PartitionKey));
-            }
+                TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, PartitionKey)
+            };
 
-            if (filterRequest.RowKey != null)
+            if (id != null)
             {
-                filterConditions.Add(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, filterRequest.RowKey));
+                filterConditions.Add(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, id));
             }
 
             var whereClause = string.Join(" and ", filterConditions.Select(p => $"({p})"));

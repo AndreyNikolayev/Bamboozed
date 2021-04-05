@@ -1,8 +1,8 @@
 ﻿using Bamboozed.Application.Commands.Entities;
-using Bamboozed.Application.Commands.Handlers;
 using Bamboozed.Application.Commands.Interfaces;
 using Bamboozed.Application.Commands.Services;
 using Bamboozed.Application.Context;
+using Bamboozed.Application.Events;
 using Bamboozed.Application.Interfaces;
 using Bamboozed.Application.Services;
 using Bamboozed.DAL;
@@ -34,6 +34,8 @@ namespace Bamboozed.Application
             services.AddScoped<ICommandHandler<RegisterCommand>, RegisterCommandHandler>();
             services.AddScoped<ICommandHandler<InputCodeCommand>, InputCodeCommandHandler>();
             services.AddScoped<ICommandHandler<InputPasswordCommand>, InputPasswordCommandHandler>();
+
+            DomainEvents.Init();
         }
     }
 }

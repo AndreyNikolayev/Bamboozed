@@ -46,7 +46,7 @@ namespace Bamboozed.AzureFunctions
 
                 var commandResult = await _commandBus.Handle(command);
 
-                return new OkObjectResult(commandResult.Message);
+                return new OkResult();
             }
             catch (CommandNotParsedException)
             {

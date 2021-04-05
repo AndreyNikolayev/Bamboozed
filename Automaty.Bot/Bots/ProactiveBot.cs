@@ -46,11 +46,10 @@ namespace Bamboozed.Bot.Bots
 
             var withoutHtmlMessage = Regex.Replace(sendMessage, "<.*?>", String.Empty);
 
-            var requestBody = JsonConvert.SerializeObject(new NotificationRequest
-            {
-                ConversationReference = conversationReference,
-                Message = withoutHtmlMessage
-            }, new JsonSerializerSettings
+            var requestBody = JsonConvert.SerializeObject(new NotificationRequest(
+                conversationReference,
+                withoutHtmlMessage
+            ), new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
                 ContractResolver = new DefaultContractResolver
@@ -64,7 +63,13 @@ namespace Bamboozed.Bot.Bots
                 var result = await _httpClient.PostAsync(_requestEndpoint,
                     new StringContent(requestBody, Encoding.UTF8, "application/json"), cancellationToken);
 
-                var replyActivity = activity.CreateReply(await result.Content.ReadAsStringAsync());
+                var replyMessage = await result.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(replyMessage))
+                {
+                    return;
+                }
+
+                var replyActivity = activity.CreateReply(replyMessage);
                 await turnContext.SendActivityAsync(replyActivity, cancellationToken);
             }
             catch (Exception e)
