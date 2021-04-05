@@ -2,9 +2,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Bamboozed.Application.Interfaces;
+using Bamboozed.DAL.Repository;
+using Bamboozed.Domain;
+using Bamboozed.Domain.User;
 using MailKit;
 using MailKit.Net.Imap;
 using MailKit.Search;
+using Microsoft.Bot.Schema;
+using Newtonsoft.Json;
 
 namespace Bamboozed.Application.Services
 {
@@ -20,16 +25,19 @@ namespace Bamboozed.Application.Services
         private readonly BambooService _bambooService;
         private readonly NotificationService _notificationService;
         private readonly ISettingsService _settingsService;
+        private readonly IRepository<User> _userRepository;
 
         public TimeOffService(RequestParser requestParser,
             BambooService bambooService,
             NotificationService notificationService,
-            ISettingsService settingsService)
+            ISettingsService settingsService,
+            IRepository<User> userRepository)
         {
             _requestParser = requestParser;
             _bambooService = bambooService;
             _notificationService = notificationService;
             _settingsService = settingsService;
+            _userRepository = userRepository;
         }
 
         public async Task Handle()
@@ -50,9 +58,13 @@ namespace Bamboozed.Application.Services
 
             var request = _requestParser.ParseRequest(message);
 
+            var user = await _userRepository.GetById(request.ApproverEmail);
+
             await _bambooService.ApproveTimeOff(request);
             await folder.AddFlagsAsync(messageId, MessageFlags.Seen, false);
-            await _notificationService.Notify(request.ApprovedMessage);
+            await _notificationService.Notify(new NotificationRequest(
+                JsonConvert.DeserializeObject<ConversationReference>(user.Value.ConversationReferenceJson),
+                request.ApprovedMessage));
         }
 
         private async Task WithImapClient(Func<ImapClient, Task> action)

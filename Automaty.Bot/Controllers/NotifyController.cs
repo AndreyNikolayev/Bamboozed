@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Bamboozed.Domain;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
@@ -15,24 +16,21 @@ namespace Bamboozed.Bot.Controllers
     {
         private readonly IBotFrameworkHttpAdapter _adapter;
         private readonly string _appId;
-        private readonly ConversationReference _conversationReference;
 
         public NotifyController(IBotFrameworkHttpAdapter adapter, IConfiguration configuration)
         {
             _adapter = adapter;
             _appId = configuration["MicrosoftAppId"] ?? string.Empty;
-
-            _conversationReference = configuration["ConversationReference"] == null ? null :
-                JsonConvert.DeserializeObject<ConversationReference>(configuration["ConversationReference"]);
         }
 
-        public async Task<IActionResult> Get([FromBody] string message)
+        public async Task<IActionResult> Get([FromBody] NotificationRequest request)
         {
-            AppCredentials.TrustServiceUrl(_conversationReference.ServiceUrl);
+
+            AppCredentials.TrustServiceUrl(request.ConversationReference.ServiceUrl);
 
             await ((BotAdapter)_adapter).ContinueConversationAsync(_appId,
-                _conversationReference,
-                async (turnContext, cancellationToken) => await turnContext.SendActivityAsync(message, cancellationToken: cancellationToken),
+                request.ConversationReference,
+                async (turnContext, cancellationToken) => await turnContext.SendActivityAsync(request.Message, cancellationToken: cancellationToken),
             default);
 
             return new OkResult();

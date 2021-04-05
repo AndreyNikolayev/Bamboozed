@@ -20,20 +20,6 @@ namespace Bamboozed.Application.Services
             _settingsService = settingsService;
         }
 
-        public async Task Notify(string message)
-        {
-            var endpoint = _settingsService.Get(NotificationEndpointKey);
-
-            using var response = await HttpClient.PostAsync(endpoint,
-                new StringContent("\"" + message + "\"", Encoding.UTF8, "application/json"));
-
-            if (!response.IsSuccessStatusCode)
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Status:{response.StatusCode} Response:{body}");
-            }
-        }
-
         public async Task Notify(NotificationRequest request)
         {
             var endpoint = _settingsService.Get(NotificationEndpointKey);
