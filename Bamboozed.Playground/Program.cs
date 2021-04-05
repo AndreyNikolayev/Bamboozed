@@ -1,16 +1,8 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Bamboozed.Application;
 using Bamboozed.Application.Commands.Entities;
-using Bamboozed.Application.Commands.Interfaces;
 using Bamboozed.Application.Commands.Services;
-using Bamboozed.Application.Services;
-using Bamboozed.DAL.Repository;
-using Bamboozed.Domain;
-using Bamboozed.Domain.User;
-using CSharpFunctionalExtensions;
-using Microsoft.Bot.Schema;
 
 namespace Bamboozed.Playground
 {
