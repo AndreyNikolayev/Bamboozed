@@ -21,7 +21,7 @@ namespace Bamboozed.Bot.Controllers
         {
             _adapter = adapter;
             _appId = configuration["MicrosoftAppId"] ?? string.Empty;
-            _appId = configuration["ServiceUrl"] ?? string.Empty;
+            _serviceUrl = configuration["ServiceUrl"] ?? string.Empty;
         }
 
         public async Task<IActionResult> Get([FromBody] NotificationRequest request)

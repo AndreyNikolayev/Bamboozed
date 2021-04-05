@@ -1,8 +1,15 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Bamboozed.Application;
+using Bamboozed.Application.Commands.Entities;
+using Bamboozed.Application.Commands.Interfaces;
+using Bamboozed.Application.Commands.Services;
 using Bamboozed.Application.Services;
+using Bamboozed.DAL.Repository;
 using Bamboozed.Domain;
+using Bamboozed.Domain.User;
+using CSharpFunctionalExtensions;
 using Microsoft.Bot.Schema;
 
 namespace Bamboozed.Playground
@@ -15,17 +22,13 @@ namespace Bamboozed.Playground
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
 
-            var notificationService = serviceProvider.GetRequiredService<NotificationService>();
+            var notificationService = serviceProvider.GetRequiredService<CommandBus>();
 
-            var conversationReference = new ConversationReference(
-               // user: new ChannelAccount("29:10N-S1JIYcRAn3ScGF6wz72lOPSr8iHexFX7IIEuHc_tuTxsqfp7tM08VgZo9V-Sx"),
-               // bot: new ChannelAccount("28:129fa032-ec89-4f2d-b23b-88b852be9030"),
-                conversation: new ConversationAccount(id: "29:10N-S1JIYcRAn3ScGF6wz72lOPSr8iHexFX7IIEuHc_tuTxsqfp7tM08VgZo9V-Sx"),
-                serviceUrl: "https://smba.trafficmanager.net/apis/"
-              //  channelId:"skype"
-            );
-
-            await notificationService.Notify(new NotificationRequest(conversationReference.Conversation.Id, "lol"));
+            await notificationService.Handle(new RegisterCommand
+            {
+                Email = "adsg@gmail.com",
+                ConversationId = "29:10N-S1JIYcRAn3ScGF6wz72lOPSr8iHexFX7IIEuHc_tuTxsqfp7tM08VgZo9V-Sx"
+            });
         }
     }
 }
