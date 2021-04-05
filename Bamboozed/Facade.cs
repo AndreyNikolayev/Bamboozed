@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using Bamboozed.Application.Commands.Exceptions;
-using Bamboozed.Application.Commands.Interfaces;
 using Bamboozed.Application.Commands.Services;
 using Bamboozed.Domain;
 using CSharpFunctionalExtensions;
@@ -18,10 +17,10 @@ namespace Bamboozed.AzureFunctions
 {
     public class Facade
     {
-        private readonly ICommandParser _commandParser;
+        private readonly CommandParser _commandParser;
         private readonly CommandBus _commandBus;
 
-        public Facade(ICommandParser commandParser,
+        public Facade(CommandParser commandParser,
             CommandBus commandBus)
         {
             _commandParser = commandParser;

@@ -8,7 +8,7 @@ using CommandLine;
 
 namespace Bamboozed.Application.Commands.Services
 {
-    public class CommandParser: ICommandParser
+    public class CommandParser
     {
         private static readonly Type[] CommandTypes = AppDomain.CurrentDomain
             .GetAssemblies()
@@ -16,7 +16,7 @@ namespace Bamboozed.Application.Commands.Services
             .Where(p => typeof(ICommand).IsAssignableFrom(p) && !p.IsAbstract)
             .ToArray();
 
-        private static readonly Parser Parser = new Parser((settings) => settings.AutoHelp = false);
+        private static readonly Parser Parser = new Parser(settings => settings.AutoHelp = false);
 
         public ICommand GetCommand(string commandText)
         {

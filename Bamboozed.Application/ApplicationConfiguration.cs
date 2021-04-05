@@ -26,7 +26,7 @@ namespace Bamboozed.Application
             services.AddScoped<CryptoService>();
             services.AddScoped<MailSenderService>();
 
-            services.AddScoped<ICommandParser, CommandParser>();
+            services.AddScoped<CommandParser>();
             services.AddScoped<CommandBus>();
 
             services.AddScoped<ICommandHandler<RegisterCommand>, RegisterCommandHandler>();

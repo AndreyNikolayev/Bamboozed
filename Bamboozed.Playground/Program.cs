@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Bamboozed.Application;
-using Bamboozed.Application.Commands.Entities;
 using Bamboozed.Application.Commands.Services;
 
 namespace Bamboozed.Playground
@@ -14,13 +13,9 @@ namespace Bamboozed.Playground
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
 
-            var notificationService = serviceProvider.GetRequiredService<CommandBus>();
+            var commandParser = serviceProvider.GetRequiredService<CommandParser>();
 
-            await notificationService.Handle(new RegisterCommand
-            {
-                Email = "adsg@gmail.com",
-                ConversationId = "29:10N-S1JIYcRAn3ScGF6wz72lOPSr8iHexFX7IIEuHc_tuTxsqfp7tM08VgZo9V-Sx"
-            });
+            var lol = commandParser.GetCommand("help");
         }
     }
 }
