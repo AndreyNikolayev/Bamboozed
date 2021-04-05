@@ -19,11 +19,11 @@ namespace Bamboozed.Application.Events.Events
         }
     }
 
-    public sealed class RegistrationFailedEventHandler : IEventHandler<RegistrationStepFailedEvent>
+    public sealed class RegistrationStepFailedEventHandler : IEventHandler<RegistrationStepFailedEvent>
     {
         private readonly NotificationService _notificationService;
 
-        public RegistrationFailedEventHandler(NotificationService notificationService)
+        public RegistrationStepFailedEventHandler(NotificationService notificationService)
         {
             _notificationService = notificationService;
         }

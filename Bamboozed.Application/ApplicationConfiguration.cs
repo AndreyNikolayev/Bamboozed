@@ -3,6 +3,8 @@ using Bamboozed.Application.Commands.Interfaces;
 using Bamboozed.Application.Commands.Services;
 using Bamboozed.Application.Context;
 using Bamboozed.Application.Events;
+using Bamboozed.Application.Events.Events;
+using Bamboozed.Application.Events.Interfaces;
 using Bamboozed.Application.Interfaces;
 using Bamboozed.Application.Services;
 using Bamboozed.DAL;
@@ -30,11 +32,17 @@ namespace Bamboozed.Application
 
             services.AddScoped<ICommandParser, CommandParser>();
             services.AddScoped<CommandBus>();
-            services.AddScoped<DomainEventBus>();
 
             services.AddScoped<ICommandHandler<RegisterCommand>, RegisterCommandHandler>();
             services.AddScoped<ICommandHandler<InputCodeCommand>, InputCodeCommandHandler>();
             services.AddScoped<ICommandHandler<InputPasswordCommand>, InputPasswordCommandHandler>();
+
+            services.AddScoped<DomainEventBus>();
+
+            services.AddScoped<IEventHandler<PasswordSubmittedEvent>, PasswordSubmittedEventHandler>();
+            services.AddScoped<IEventHandler<RegistrationCodeEnteredEvent>, RegistrationCodeEnteredEventHandler>();
+            services.AddScoped<IEventHandler<RegistrationStepFailedEvent>, RegistrationStepFailedEventHandler>();
+            services.AddScoped<IEventHandler<UserCreatedEvent>, UserCreatedEventHandler>();
         }
     }
 }
