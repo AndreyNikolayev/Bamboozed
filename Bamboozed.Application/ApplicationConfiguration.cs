@@ -28,17 +28,9 @@ namespace Bamboozed.Application
 
             services.AddScoped<CommandParser>();
             services.AddScoped<CommandBus>();
-
-            services.AddScoped<ICommandHandler<RegisterCommand>, RegisterCommandHandler>();
-            services.AddScoped<ICommandHandler<InputCodeCommand>, InputCodeCommandHandler>();
-            services.AddScoped<ICommandHandler<InputPasswordCommand>, InputPasswordCommandHandler>();
-
             services.AddScoped<DomainEventBus>();
 
-            services.AddScoped<IEventHandler<PasswordSubmittedEvent>, PasswordSubmittedEventHandler>();
-            services.AddScoped<IEventHandler<RegistrationCodeEnteredEvent>, RegistrationCodeEnteredEventHandler>();
-            services.AddScoped<IEventHandler<RegistrationStepFailedEvent>, RegistrationStepFailedEventHandler>();
-            services.AddScoped<IEventHandler<UserCreatedEvent>, UserCreatedEventHandler>();
+            services.AddHandlers();
         }
     }
 }
