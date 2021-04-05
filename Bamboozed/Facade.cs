@@ -30,7 +30,7 @@ namespace Bamboozed.AzureFunctions
             _conversationReferenceContext = conversationReferenceContext;
         }
 
-        [FunctionName("Facade")]
+        [FunctionName(nameof(Facade))]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Admin, "post", Route = null)] HttpRequest req, ILogger log)
         {
@@ -44,7 +44,7 @@ namespace Bamboozed.AzureFunctions
 
                 var command = _commandParser.GetCommand(notificationRequest.Message);
 
-                var commandResult = await _commandBus.Handle(command);
+                await _commandBus.Handle(command);
 
                 return new OkResult();
             }
