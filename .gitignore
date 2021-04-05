@@ -340,3 +340,4 @@ ASALocalRun/
 healthchecksdb
 /Bamboozed.Playground/Properties/launchSettings.json
 /Bamboozed/Properties/ServiceDependencies/BamboozedAzureFunctions20210324095609 - Zip Deploy/profile.arm.json
+/Automaty.Bot/Properties/ServiceDependencies/bamboozed - Web Deploy/profile.arm.json

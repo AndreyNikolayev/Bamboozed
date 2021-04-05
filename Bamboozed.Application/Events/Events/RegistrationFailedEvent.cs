@@ -28,7 +28,7 @@ namespace Bamboozed.Application.Events.Events
             _notificationService = notificationService;
         }
 
-        public Task HandleAsync(RegistrationStepFailedEvent domainEvent)
+        public Task Handle(RegistrationStepFailedEvent domainEvent)
         {
             return _notificationService.Notify(new NotificationRequest(domainEvent.ConversationReference,
                 domainEvent.Message));

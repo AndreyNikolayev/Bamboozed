@@ -25,15 +25,18 @@ namespace Bamboozed.Application.Commands.Entities
         private readonly ReadonlyConversationReferenceContext _conversationReferenceContext;
         private readonly IRepository<User> _userRepository;
         private readonly IPasswordService _passwordService;
+        private readonly DomainEventBus _domainEventBus;
 
         public InputPasswordCommandHandler(
             ReadonlyConversationReferenceContext conversationReferenceContext,
             IRepository<User> userRepository,
-            IPasswordService passwordService)
+            IPasswordService passwordService,
+            DomainEventBus domainEventBus)
         {
             _conversationReferenceContext = conversationReferenceContext;
             _userRepository = userRepository;
             _passwordService = passwordService;
+            _domainEventBus = domainEventBus;
         }
 
         public async Task<Result> Handle(InputPasswordCommand command)
@@ -47,8 +50,8 @@ namespace Bamboozed.Application.Commands.Entities
                 .CheckIf(user => user.UserStatus != UserStatus.Active, user => user.Activate())
                 .Tap(user => _passwordService.Set(user.Email, command.Password))
                 .Tap(user => _userRepository.Edit(user))
-                .Tap(user => DomainEvents.Dispatch(new PasswordSubmittedEvent(user.Email)))
-                .OnFailure(error => DomainEvents.Dispatch(new RegistrationStepFailedEvent(_conversationReferenceContext.Context, error)))
+                .Tap(user => _domainEventBus.Dispatch(new PasswordSubmittedEvent(user.Email)))
+                .OnFailure(error => _domainEventBus.Dispatch(new RegistrationStepFailedEvent(_conversationReferenceContext.Context, error)))
                 .Bind(_ => Result.Success());
         }
     }

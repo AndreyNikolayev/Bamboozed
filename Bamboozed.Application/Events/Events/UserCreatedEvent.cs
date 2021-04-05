@@ -33,7 +33,7 @@ namespace Bamboozed.Application.Events.Events
             _userRepository = userRepository;
         }
 
-        public Task HandleAsync(UserCreatedEvent domainEvent)
+        public Task Handle(UserCreatedEvent domainEvent)
         {
             return _userRepository.GetById(domainEvent.Email)
                 .ToResult($"User with email {domainEvent.Email} is not found.")

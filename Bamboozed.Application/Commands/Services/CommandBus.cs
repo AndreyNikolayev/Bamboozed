@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Bamboozed.Application.Commands.Interfaces;
+using Bamboozed.Application.Events.Interfaces;
 using CSharpFunctionalExtensions;
 
 namespace Bamboozed.Application.Commands.Services

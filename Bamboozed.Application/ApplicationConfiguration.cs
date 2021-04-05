@@ -30,12 +30,11 @@ namespace Bamboozed.Application
 
             services.AddScoped<ICommandParser, CommandParser>();
             services.AddScoped<CommandBus>();
+            services.AddScoped<DomainEventBus>();
 
             services.AddScoped<ICommandHandler<RegisterCommand>, RegisterCommandHandler>();
             services.AddScoped<ICommandHandler<InputCodeCommand>, InputCodeCommandHandler>();
             services.AddScoped<ICommandHandler<InputPasswordCommand>, InputPasswordCommandHandler>();
-
-            DomainEvents.Init();
         }
     }
 }

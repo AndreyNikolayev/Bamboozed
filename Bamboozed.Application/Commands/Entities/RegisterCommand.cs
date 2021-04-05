@@ -27,14 +27,17 @@ namespace Bamboozed.Application.Commands.Entities
         private readonly ReadonlyConversationReferenceContext _conversationReferenceContext;
         private readonly IRepository<User> _userRepository;
         private readonly MailSenderService _mailSenderService;
+        private readonly DomainEventBus _domainEventBus;
 
         public RegisterCommandHandler(ReadonlyConversationReferenceContext conversationReferenceContext,
             IRepository<User> userRepository,
-            MailSenderService mailSenderService)
+            MailSenderService mailSenderService,
+            DomainEventBus domainEventBus)
         {
             _conversationReferenceContext = conversationReferenceContext;
             _userRepository = userRepository;
             _mailSenderService = mailSenderService;
+            _domainEventBus = domainEventBus;
         }
 
         public async Task<Result> Handle(RegisterCommand command)
@@ -77,8 +80,8 @@ namespace Bamboozed.Application.Commands.Entities
                 .Tap(registrationCode => _mailSenderService.SendRegistrationCode(command.Email, registrationCode))
                 .Tap(registrationCode => _userRepository.Add(new User(command.Email, _conversationReferenceContext.Context.User.Id,
                     JsonConvert.SerializeObject(_conversationReferenceContext.Context), registrationCode)))
-                .Tap(user => DomainEvents.Dispatch(new UserCreatedEvent(command.Email)))
-                .OnFailure(error => DomainEvents.Dispatch(new RegistrationStepFailedEvent(_conversationReferenceContext.Context, error)))
+                .Tap(user => _domainEventBus.Dispatch(new UserCreatedEvent(command.Email)))
+                .OnFailure(error => _domainEventBus.Dispatch(new RegistrationStepFailedEvent(_conversationReferenceContext.Context, error)))
                 .Bind(_ => Result.Success());
         }
     }
