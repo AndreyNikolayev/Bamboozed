@@ -11,7 +11,7 @@ using CSharpFunctionalExtensions;
 
 namespace Bamboozed.Application.Commands.Entities
 {
-    [Verb("code", HelpText = "insert code from the registration email")]
+    [Verb("code", HelpText = "Insert code from the registration email")]
     public class InputCodeCommand: ICommand
     {
         [Value(0, Required = true, HelpText = "Code from registration email")]

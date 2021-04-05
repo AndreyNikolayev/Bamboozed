@@ -13,7 +13,7 @@ using CSharpFunctionalExtensions;
 
 namespace Bamboozed.Application.Commands.Entities
 {
-    [Verb("register", HelpText = "register email")]
+    [Verb("register", HelpText = "Register email")]
     public class RegisterCommand : ICommand
     {
         [Value(0, Required = true, HelpText = "Your Bamboo Email")]
