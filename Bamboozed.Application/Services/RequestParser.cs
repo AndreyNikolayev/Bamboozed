@@ -2,9 +2,8 @@
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Bamboozed.Application.Entities;
-using Bamboozed.Application.Enums;
-using Bamboozed.Application.Extensions;
+using Bamboozed.Domain.Extensions;
+using Bamboozed.Domain.TimeOffRequest;
 using MimeKit;
 
 namespace Bamboozed.Application.Services
@@ -25,18 +24,18 @@ namespace Bamboozed.Application.Services
             var datesMatch = _datesRegex.Match(body);
 
             return new TimeOffRequest
-            {
-                ApproverEmail = message.To.Mailboxes.First().Address,
-                ApproverName = message.To.Mailboxes.First().Name,
-                RequestorName = _requestorNameRegex.Match(body).Groups[1].Value,
-                TimeOffType = _timeOffTypeRegex.Match(body).Groups[1].Value.ParseEnumByDescription<TimeOffType>(),
-                ApproveLink = _approveLinkRegex.Match(body).Groups[1].Value,
-                DenyLink = _denyLinkRegex.Match(body).Groups[1].Value,
-                ReviewLink = _reviewLinkRegex.Match(body).Groups[1].Value,
-                RequestDate = message.Date.Date,
-                StartDate = DateTime.ParseExact(datesMatch.Groups[1].Value, DateFormat, CultureInfo.InvariantCulture),
-                EndDate = DateTime.ParseExact(String.IsNullOrEmpty(datesMatch.Groups[2].Value) ? datesMatch.Groups[1].Value: datesMatch.Groups[2].Value, DateFormat, CultureInfo.InvariantCulture)
-            };
+            (
+                message.To.Mailboxes.First().Address,
+                message.To.Mailboxes.First().Name,
+                _requestorNameRegex.Match(body).Groups[1].Value,
+                 _timeOffTypeRegex.Match(body).Groups[1].Value.ParseEnumByDescription<TimeOffType>(),
+                DateTime.ParseExact(datesMatch.Groups[1].Value, DateFormat, CultureInfo.InvariantCulture),
+                DateTime.ParseExact(string.IsNullOrEmpty(datesMatch.Groups[2].Value) ? datesMatch.Groups[1].Value : datesMatch.Groups[2].Value, DateFormat, CultureInfo.InvariantCulture),
+                message.Date.Date,
+                _approveLinkRegex.Match(body).Groups[1].Value,
+                _denyLinkRegex.Match(body).Groups[1].Value,
+                 _reviewLinkRegex.Match(body).Groups[1].Value
+            );
         }
     }
 }

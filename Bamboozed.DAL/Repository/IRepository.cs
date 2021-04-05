@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Bamboozed.Domain.Base;
+using CSharpFunctionalExtensions;
 
 namespace Bamboozed.DAL.Repository
 {
-    public interface IRepository<T> where T : Entity
+    public interface IRepository<T> where T : Entity<string>
     {
         Task Add(T entity);
         Task Edit(T entity);

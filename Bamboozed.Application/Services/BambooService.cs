@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using Bamboozed.Application.Entities;
 using Bamboozed.Application.Interfaces;
+using Bamboozed.Domain.TimeOffRequest;
 using RestSharp;
 
 namespace Bamboozed.Application.Services

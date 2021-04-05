@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Bamboozed.Application.Extensions
+namespace Bamboozed.Domain.Extensions
 {
     public static class EnumExtensions
     {

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bamboozed.Domain.Base;
+using CSharpFunctionalExtensions;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Bamboozed.DAL.Repository
 {
-    public class Repository<T> : IRepository<T> where T : Entity
+    public class Repository<T> : IRepository<T> where T : Entity<string>
     {
         private readonly CloudTableClient _tableClient;
         private const string PartitionKey = "Bamboozed";

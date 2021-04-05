@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Bamboozed.Application;
-using Bamboozed.Application.Services;
 using Bamboozed.DAL.Repository;
 using Bamboozed.Domain.User;
 
