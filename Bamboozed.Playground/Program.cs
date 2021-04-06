@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Bamboozed.Application;
 using Bamboozed.Application.Commands.Entities.PolicyCommand;
@@ -17,9 +18,14 @@ namespace Bamboozed.Playground
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
 
-            var service = serviceProvider.GetRequiredService<IRepository<MaxDaysOffPolicy>>();
+            var conversationId = Environment.GetEnvironmentVariable("TestConversationId");
 
-            var a =await service.Get();
+            var service = serviceProvider.GetRequiredService<ICommandHandler<ListPolicyCommand>>();
+
+            var a =await service.Handle(new ListPolicyCommand
+            {
+                ConversationId = conversationId
+            });
         }
     }
 }

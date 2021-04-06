@@ -51,7 +51,7 @@ namespace Bamboozed.Application.Commands.Entities.PolicyCommand
                         .Where(p => p.UserEmail == user.Email)
                         .ToList();
                 })
-                .Tap(policies => _notificationService.Notify(new NotificationRequest(command.ConversationId, "")))
+                .Tap(policies => _notificationService.Notify(new NotificationRequest(command.ConversationId, GetPoliciesDescription(policies))))
                 .OnFailure(error => _notificationService.Notify(new NotificationRequest(command.ConversationId, error)))
                 .Bind(_ => Result.Success());
         }
@@ -71,7 +71,7 @@ namespace Bamboozed.Application.Commands.Entities.PolicyCommand
             foreach (var daysOffPolicy in daysOffPolicies)
             {
                 result.AppendLine(
-                    $"{daysOffPolicy.Action.GetDescription()} {daysOffPolicy.TimeOffType}s if less than {daysOffPolicy.MaxDays} consecutive days");
+                    $"{daysOffPolicy.Action.GetDescription()} {daysOffPolicy.TimeOffType}s if no more than {daysOffPolicy.MaxDays} consecutive days");
             }
 
             return result.ToString();
