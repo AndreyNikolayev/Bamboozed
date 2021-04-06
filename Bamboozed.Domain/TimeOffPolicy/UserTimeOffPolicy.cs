@@ -6,9 +6,9 @@ namespace Bamboozed.Domain.TimeOffPolicy
 {
     public abstract class UserTimeOffPolicy: Entity<string>
     {
-        public string UserEmail { get; private set; }
-        public TimeOffAction Action { get; private set; }
-        public TimeOffType TimeOffType { get; private set; }
+        public string UserEmail { get; protected set; }
+        public TimeOffAction Action { get; protected set; }
+        public TimeOffType TimeOffType { get; protected set; }
 
         protected  UserTimeOffPolicy() { }
 
