@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using Bamboozed.Domain.Extensions;
 
 namespace Bamboozed.Domain.TimeOffRequest
 {
@@ -16,17 +15,6 @@ namespace Bamboozed.Domain.TimeOffRequest
         public string ApproveLink { get; }
         public string DenyLink { get; }
         public string ReviewLink { get; }
-        public string ApprovedMessage
-        {
-            get
-            {
-                var periodDescription = StartDate.ToString("ddd, MMM d") + (EndDate.Equals(StartDate)
-                    ? ""
-                    : $"-{EndDate:ddd, MMM d}");
-
-                return $"{RequestorName} {TimeOffType.GetDescription()} on {periodDescription} is approved by {ApproverName}";
-            }
-        }
 
         public TimeOffRequest(string approverEmail, string requestorName, string approverName, TimeOffType timeOffType,
             DateTime startDate, DateTime endDate, DateTime requestDate, string approveLink, string denyLink,
@@ -44,13 +32,9 @@ namespace Bamboozed.Domain.TimeOffRequest
             {
                 throw new ArgumentException($"{nameof(approverName)} cannot be empty");
             }
-            if (timeOffType == TimeOffType.None)
-            {
-                throw new ArgumentException($"{nameof(timeOffType)} cannot be none");
-            }
             if (startDate == DateTime.MinValue)
             {
-                throw new ArgumentException($"{nameof(startDate)} cannot be emoty");
+                throw new ArgumentException($"{nameof(startDate)} cannot be empty");
             }
             if (endDate == DateTime.MinValue)
             {
@@ -93,7 +77,6 @@ namespace Bamboozed.Domain.TimeOffRequest
 
     public enum TimeOffType
     {
-        None,
         [Description("Sick-leave")]
         SickLeave,
         [Description("Day-Off")]

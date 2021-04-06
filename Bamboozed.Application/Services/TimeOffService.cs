@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Bamboozed.Application.Extensions;
 using Bamboozed.Application.Interfaces;
 using Bamboozed.DAL.Repository;
 using Bamboozed.Domain.NotificationRequest;
+using Bamboozed.Domain.TimeOffRequest;
 using Bamboozed.Domain.User;
 using MailKit;
 using MailKit.Net.Imap;
@@ -24,18 +26,24 @@ namespace Bamboozed.Application.Services
         private readonly NotificationService _notificationService;
         private readonly ISettingsService _settingsService;
         private readonly IRepository<User> _userRepository;
+        private readonly IRepository<TimeOffRequestLog> _timeOffRequestLogRepository;
+        private readonly TimeOffPolicyService _timeOffPolicyService;
 
         public TimeOffService(RequestParser requestParser,
             BambooService bambooService,
             NotificationService notificationService,
             ISettingsService settingsService,
-            IRepository<User> userRepository)
+            IRepository<User> userRepository,
+            TimeOffPolicyService timeOffPolicyService,
+            IRepository<TimeOffRequestLog> timeOffRequestLogRepository)
         {
             _requestParser = requestParser;
             _bambooService = bambooService;
             _notificationService = notificationService;
             _settingsService = settingsService;
             _userRepository = userRepository;
+            _timeOffPolicyService = timeOffPolicyService;
+            _timeOffRequestLogRepository = timeOffRequestLogRepository;
         }
 
         public async Task Handle()
@@ -58,11 +66,22 @@ namespace Bamboozed.Application.Services
 
             var user = await _userRepository.GetById(request.ApproverEmail);
 
-            await _bambooService.ApproveTimeOff(request);
+            var action = await _timeOffPolicyService.GetAction(request);
+
+            if (action == TimeOffAction.Approve)
+            {
+                await _bambooService.ApproveTimeOff(request);
+            }
+
             await folder.AddFlagsAsync(messageId, MessageFlags.Seen, false);
+
+            await _timeOffRequestLogRepository.Add(new TimeOffRequestLog(request, action));
+
             await _notificationService.Notify(new NotificationRequest(
                 user.Value.ConversationId,
-                request.ApprovedMessage));
+                action == TimeOffAction.Approve ?
+                request.GetApprovedMessage() : request.GetReviewMessage()
+                ));
         }
 
         private async Task WithImapClient(Func<ImapClient, Task> action)

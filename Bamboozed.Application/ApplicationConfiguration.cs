@@ -21,6 +21,7 @@ namespace Bamboozed.Application
             services.AddScoped<TimeOffService>();
             services.AddScoped<CryptoService>();
             services.AddScoped<MailSenderService>();
+            services.AddScoped<TimeOffPolicyService>();
 
             services.AddScoped<CommandParser>();
             services.AddScoped<CommandBus>();
