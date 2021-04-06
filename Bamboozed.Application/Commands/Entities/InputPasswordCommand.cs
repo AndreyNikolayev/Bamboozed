@@ -12,7 +12,7 @@ using CSharpFunctionalExtensions;
 
 namespace Bamboozed.Application.Commands.Entities
 {
-    [Verb("password", HelpText = "Add or update bamboo password")]
+    [Verb("password", HelpText = "Add or update bamboo password (ex. password myPassword)")]
     public class InputPasswordCommand : ICommand
     {
         [Value(0, Required = true, HelpText = "Your Bamboo password")]
