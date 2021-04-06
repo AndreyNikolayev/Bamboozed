@@ -19,5 +19,15 @@ namespace Bamboozed.Domain.TimeOffPolicy
 
             MaxDays = maxDays;
         }
+
+        public void ChangeMaxDays(int maxDays)
+        {
+            if (maxDays <= 0)
+            {
+                throw new ArgumentException($"{maxDays} cannot be less than 1");
+            }
+
+            MaxDays = maxDays;
+        }
     }
 }

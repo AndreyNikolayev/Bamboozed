@@ -5,11 +5,10 @@ using Bamboozed.Application.Events;
 using Bamboozed.Application.Events.Events;
 using Bamboozed.DAL.Repository;
 using Bamboozed.Domain.Extensions;
-using Bamboozed.Domain.User;
 using CommandLine;
 using CSharpFunctionalExtensions;
 
-namespace Bamboozed.Application.Commands.Entities
+namespace Bamboozed.Application.Commands.Entities.UserCommand
 {
     [Verb("code", HelpText = "Insert code from the registration email (ex. code 123456)")]
     public class InputCodeCommand: ICommand
@@ -21,11 +20,11 @@ namespace Bamboozed.Application.Commands.Entities
 
     public class InputCodeCommandHandler : ICommandHandler<InputCodeCommand>
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Domain.User.User> _userRepository;
         private readonly DomainEventBus _domainEventBus;
 
         public InputCodeCommandHandler(
-            IRepository<User> userRepository,
+            IRepository<Domain.User.User> userRepository,
             DomainEventBus domainEventBus)
         {
             _userRepository = userRepository;

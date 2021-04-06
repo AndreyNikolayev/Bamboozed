@@ -10,7 +10,7 @@ using Bamboozed.Domain.NotificationRequest;
 using CommandLine;
 using CSharpFunctionalExtensions;
 
-namespace Bamboozed.Application.Commands.Entities
+namespace Bamboozed.Application.Commands.Entities.Common
 {
     [Verb("help")]
     public class HelpCommand: ICommand

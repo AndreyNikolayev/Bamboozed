@@ -11,7 +11,7 @@ using Bamboozed.Domain.User;
 using CommandLine;
 using CSharpFunctionalExtensions;
 
-namespace Bamboozed.Application.Commands.Entities
+namespace Bamboozed.Application.Commands.Entities.UserCommand
 {
     [Verb("register", HelpText = "Register email (ex. register myemail@gmail.com)")]
     public class RegisterCommand : ICommand
@@ -23,12 +23,12 @@ namespace Bamboozed.Application.Commands.Entities
 
     public class RegisterCommandHandler : ICommandHandler<RegisterCommand>
     {
-        private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Domain.User.User> _userRepository;
         private readonly MailSenderService _mailSenderService;
         private readonly DomainEventBus _domainEventBus;
 
         public RegisterCommandHandler(
-            IRepository<User> userRepository,
+            IRepository<Domain.User.User> userRepository,
             MailSenderService mailSenderService,
             DomainEventBus domainEventBus)
         {

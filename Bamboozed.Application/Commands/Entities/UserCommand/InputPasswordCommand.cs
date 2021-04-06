@@ -10,7 +10,7 @@ using Bamboozed.Domain.User;
 using CommandLine;
 using CSharpFunctionalExtensions;
 
-namespace Bamboozed.Application.Commands.Entities
+namespace Bamboozed.Application.Commands.Entities.UserCommand
 {
     [Verb("password", HelpText = "Add or update bamboo password (ex. password myPassword)")]
     public class InputPasswordCommand : ICommand

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Bamboozed.Application;
-using Bamboozed.Application.Commands.Services;
+using Bamboozed.DAL.Repository;
+using Bamboozed.Domain.TimeOffPolicy;
+using Bamboozed.Domain.TimeOffRequest;
 
 namespace Bamboozed.Playground
 {
@@ -12,10 +14,6 @@ namespace Bamboozed.Playground
             var collection = new ServiceCollection();
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
-
-            var commandParser = serviceProvider.GetRequiredService<CommandParser>();
-
-            var lol = commandParser.GetCommand("help");
         }
     }
 }

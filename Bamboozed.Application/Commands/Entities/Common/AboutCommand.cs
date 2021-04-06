@@ -5,7 +5,7 @@ using Bamboozed.Domain.NotificationRequest;
 using CommandLine;
 using CSharpFunctionalExtensions;
 
-namespace Bamboozed.Application.Commands.Entities
+namespace Bamboozed.Application.Commands.Entities.Common
 {
     [Verb("about", HelpText = "Get information about bot functionality")]
     public class AboutCommand : ICommand

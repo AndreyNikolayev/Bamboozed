@@ -16,7 +16,11 @@ namespace Bamboozed.Application.Commands.Services
             .Where(p => typeof(ICommand).IsAssignableFrom(p) && !p.IsAbstract)
             .ToArray();
 
-        private static readonly Parser Parser = new Parser(settings => settings.AutoHelp = false);
+        private static readonly Parser Parser = new Parser(settings =>
+        {
+            settings.AutoHelp = false;
+            settings.CaseInsensitiveEnumValues = true;
+        });
 
         public ICommand GetCommand(string commandText)
         {
