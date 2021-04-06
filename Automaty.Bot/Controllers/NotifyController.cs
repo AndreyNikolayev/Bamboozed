@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Bamboozed.Domain;
+using Bamboozed.Domain.NotificationRequest;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;

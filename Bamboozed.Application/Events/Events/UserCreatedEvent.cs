@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Bamboozed.Application.Events.Interfaces;
 using Bamboozed.Application.Services;
 using Bamboozed.DAL.Repository;
-using Bamboozed.Domain;
+using Bamboozed.Domain.NotificationRequest;
 using Bamboozed.Domain.User;
 using CSharpFunctionalExtensions;
 

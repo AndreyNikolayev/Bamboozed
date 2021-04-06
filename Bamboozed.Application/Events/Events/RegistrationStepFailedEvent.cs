@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Bamboozed.Application.Events.Interfaces;
 using Bamboozed.Application.Services;
-using Bamboozed.Domain;
+using Bamboozed.Domain.NotificationRequest;
 
 namespace Bamboozed.Application.Events.Events
 {

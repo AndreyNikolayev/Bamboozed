@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Bamboozed.Application.Commands.Exceptions;
 using Bamboozed.Application.Commands.Services;
-using Bamboozed.Domain;
+using Bamboozed.Domain.NotificationRequest;
 using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

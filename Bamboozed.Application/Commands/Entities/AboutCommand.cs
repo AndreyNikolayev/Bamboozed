@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Bamboozed.Application.Commands.Interfaces;
 using Bamboozed.Application.Services;
-using Bamboozed.Domain;
+using Bamboozed.Domain.NotificationRequest;
 using CommandLine;
 using CSharpFunctionalExtensions;
 

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Bamboozed.Application.Interfaces;
-using Bamboozed.Domain;
+using Bamboozed.Domain.NotificationRequest;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 

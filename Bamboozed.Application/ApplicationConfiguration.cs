@@ -1,9 +1,5 @@
-﻿using Bamboozed.Application.Commands.Entities;
-using Bamboozed.Application.Commands.Interfaces;
-using Bamboozed.Application.Commands.Services;
+﻿using Bamboozed.Application.Commands.Services;
 using Bamboozed.Application.Events;
-using Bamboozed.Application.Events.Events;
-using Bamboozed.Application.Events.Interfaces;
 using Bamboozed.Application.Interfaces;
 using Bamboozed.Application.Services;
 using Bamboozed.DAL;

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bamboozed.Application.Interfaces;
 using Bamboozed.DAL.Repository;
-using Bamboozed.Domain;
+using Bamboozed.Domain.NotificationRequest;
 using Bamboozed.Domain.User;
 using MailKit;
 using MailKit.Net.Imap;
