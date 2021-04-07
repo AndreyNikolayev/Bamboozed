@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Bamboozed.Domain.Attributes;
 using CSharpFunctionalExtensions;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Table;
 
 namespace Bamboozed.DAL.Repository
@@ -95,16 +97,64 @@ namespace Bamboozed.DAL.Repository
             do
             {
                 var tableQueryResult = await table.ExecuteQuerySegmentedAsync(query, continuationToken);
-                result.AddRange(tableQueryResult.Results
-                    .Select(p => 
-                        TableEntity.ConvertBack<T>(p.Properties, new OperationContext())
-                        )
-                );
+
+                result.AddRange(tableQueryResult.Results.Select(MapDynamicEntity));
 
                 continuationToken = tableQueryResult.ContinuationToken;
             } while (continuationToken != null);
 
             return result;
+        }
+
+        private T MapDynamicEntity(DynamicTableEntity entity)
+        {
+            var constructors = typeof(T).GetConstructors();
+            var targetConstructor = constructors.Length == 1
+                ? constructors.First()
+                : constructors.SingleOrDefault(p => p.GetCustomAttribute<MappedConstructorAttribute>() != null);
+
+            if (targetConstructor == null)
+            {
+                throw new Exception($"Could not choose mapping constructor for type {typeof(T).Name}");
+            }
+
+            var ctorParameters = GetParameters(targetConstructor.GetParameters(), entity);
+
+
+            return (T)targetConstructor.Invoke(ctorParameters.ToArray());
+        }
+
+        private static IEnumerable<object> GetParameters(IEnumerable<ParameterInfo> parameterInfos, DynamicTableEntity entity)
+        {
+            foreach (var parameterInfo in parameterInfos)
+            {
+                var dynamicPropertyKey = entity.Properties.Keys.FirstOrDefault(p =>
+                    p.Equals(parameterInfo.Name, StringComparison.InvariantCultureIgnoreCase));
+
+                if (dynamicPropertyKey == null)
+                {
+                    throw new Exception($"Could not map {parameterInfo.Name} constructor parameter for type {typeof(T).Name}");
+                }
+
+                yield return ChangeType(entity.Properties[dynamicPropertyKey].PropertyAsObject, parameterInfo.ParameterType);
+            }
+        }
+
+        private static object ChangeType(object propertyValue, Type propertyType)
+        {
+            var type = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+
+            if (type.GetTypeInfo().IsEnum)
+                return Enum.Parse(type, propertyValue.ToString());
+            if (type == typeof(DateTimeOffset))
+                return new DateTimeOffset((DateTime)propertyValue);
+            if (type == typeof(TimeSpan))
+                return TimeSpan.Parse(propertyValue.ToString(), CultureInfo.InvariantCulture);
+            if (type == typeof(uint))
+                return (uint)(int)propertyValue;
+            if (type == typeof(ulong))
+                return (ulong)(long)propertyValue;
+            return type == typeof(byte) ? ((byte[])propertyValue)[0] : Convert.ChangeType(propertyValue, type, CultureInfo.InvariantCulture);
         }
 
         private async Task<CloudTable> GetTable()

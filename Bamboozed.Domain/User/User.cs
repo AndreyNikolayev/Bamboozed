@@ -9,13 +9,11 @@ namespace Bamboozed.Domain.User
         public UserStatus UserStatus { get; private set; }
         public string RegistrationCode { get; private set; }
 
-        public User() { }
-
-        public User(string email, string conversationId, string registrationCode): base(email)
+        public User(string email, string conversationId, string registrationCode, UserStatus userStatus = UserStatus.RegistrationCodeSent): base(email)
         {
             Email = email;
             ConversationId = conversationId;
-            UserStatus = UserStatus.RegistrationCodeSent;
+            UserStatus = userStatus;
             RegistrationCode = registrationCode;
         }
         /// <summary>

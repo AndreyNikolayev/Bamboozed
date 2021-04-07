@@ -1,4 +1,5 @@
 ﻿using System;
+using Bamboozed.Domain.Attributes;
 using CSharpFunctionalExtensions;
 
 namespace Bamboozed.Domain.TimeOffRequest
@@ -13,8 +14,6 @@ namespace Bamboozed.Domain.TimeOffRequest
         public DateTime RequestDate { get; private set; }
         public TimeOffAction Status { get; private set; }
 
-        public TimeOffRequestLog() { }
-
         public TimeOffRequestLog(TimeOffRequest request, TimeOffAction status): base(Guid.NewGuid().ToString())
         {
             ApproverEmail = request.ApproverEmail;
@@ -23,6 +22,19 @@ namespace Bamboozed.Domain.TimeOffRequest
             StartDate = request.StartDate;
             EndDate = request.EndDate;
             RequestDate = request.RequestDate;
+            Status = status;
+        }
+
+        [MappedConstructor]
+        public TimeOffRequestLog(string id, string approverEmail, string requestorName, TimeOffType timeOffType,
+            DateTime startDate, DateTime endDate, DateTime requestDate, TimeOffAction status) : base(id)
+        {
+            ApproverEmail = approverEmail;
+            RequestorName = requestorName;
+            TimeOffType = timeOffType;
+            StartDate = startDate;
+            EndDate = endDate;
+            RequestDate = requestDate;
             Status = status;
         }
     }

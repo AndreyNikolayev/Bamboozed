@@ -6,14 +6,12 @@ namespace Bamboozed.Domain.TimeOffPolicy
 {
     public abstract class UserTimeOffPolicy: Entity<string>
     {
-        public string UserEmail { get; protected set; }
-        public TimeOffAction Action { get; protected set; }
-        public TimeOffType TimeOffType { get; protected set; }
+        public string UserEmail { get; private set; }
+        public TimeOffAction Action { get; private set; }
+        public TimeOffType TimeOffType { get; private set; }
 
-        protected  UserTimeOffPolicy() { }
-
-        protected UserTimeOffPolicy(string userEmail, TimeOffAction action, TimeOffType timeOffType)
-            : base(Guid.NewGuid().ToString())
+        protected UserTimeOffPolicy(string userEmail, TimeOffAction action, TimeOffType timeOffType, string id = null)
+            : base(id ?? Guid.NewGuid().ToString())
         {
             if (string.IsNullOrEmpty(userEmail))
             {

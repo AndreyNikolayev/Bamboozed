@@ -2,11 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Bamboozed.Application;
-using Bamboozed.Application.Commands.Entities.PolicyCommand;
-using Bamboozed.Application.Commands.Interfaces;
+using Bamboozed.Application.Services;
 using Bamboozed.DAL.Repository;
 using Bamboozed.Domain.TimeOffPolicy;
 using Bamboozed.Domain.TimeOffRequest;
+using Bamboozed.Domain.User;
 
 namespace Bamboozed.Playground
 {
@@ -20,12 +20,9 @@ namespace Bamboozed.Playground
 
             var conversationId = Environment.GetEnvironmentVariable("TestConversationId");
 
-            var service = serviceProvider.GetRequiredService<ICommandHandler<ListPolicyCommand>>();
+            var service = serviceProvider.GetRequiredService<TimeOffService>();
 
-            var a =await service.Handle(new ListPolicyCommand
-            {
-                ConversationId = conversationId
-            });
+            await service.Handle();
         }
     }
 }

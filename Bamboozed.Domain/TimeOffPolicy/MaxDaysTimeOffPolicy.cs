@@ -7,12 +7,10 @@ namespace Bamboozed.Domain.TimeOffPolicy
     {
         public int MaxDays { get; private set; }
 
-        public MaxDaysOffPolicy(): base() { }
-
-        public MaxDaysOffPolicy(string userEmail, TimeOffAction action, TimeOffType timeOffType, int maxDays)
-            : base(userEmail, action, timeOffType)
+        public MaxDaysOffPolicy(string userEmail, TimeOffAction action, TimeOffType timeOffType, int maxDays, string id = null)
+            : base(userEmail, action, timeOffType, id)
         {
-            if (maxDays <=0)
+            if (maxDays <= 0)
             {
                 throw new ArgumentException($"{maxDays} cannot be less than 1");
             }

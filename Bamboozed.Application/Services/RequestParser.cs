@@ -26,9 +26,9 @@ namespace Bamboozed.Application.Services
             return new TimeOffRequest
             (
                 message.To.Mailboxes.First().Address,
-                message.To.Mailboxes.First().Name,
                 _requestorNameRegex.Match(body).Groups[1].Value,
-                 _timeOffTypeRegex.Match(body).Groups[1].Value.ParseEnumByDescription<TimeOffType>(),
+                message.To.Mailboxes.First().Name,
+                _timeOffTypeRegex.Match(body).Groups[1].Value.ParseEnumByDescription<TimeOffType>(),
                 DateTime.ParseExact(datesMatch.Groups[1].Value, DateFormat, CultureInfo.InvariantCulture),
                 DateTime.ParseExact(string.IsNullOrEmpty(datesMatch.Groups[2].Value) ? datesMatch.Groups[1].Value : datesMatch.Groups[2].Value, DateFormat, CultureInfo.InvariantCulture),
                 message.Date.Date,
