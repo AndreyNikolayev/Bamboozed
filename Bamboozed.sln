@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bamboozed.AzureFunctions", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bamboozed.Playground", "Bamboozed.Playground\Bamboozed.Playground.csproj", "{37561DD7-3CEC-4570-92EA-3AA9B8751D46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboozed.Application", "Bamboozed.Application\Bamboozed.Application.csproj", "{B3FE9F8C-71FB-492B-986E-0F59C63572B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bamboozed.Application", "Bamboozed.Application\Bamboozed.Application.csproj", "{B3FE9F8C-71FB-492B-986E-0F59C63572B1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bamboozed.Bot", "Automaty.Bot\Bamboozed.Bot.csproj", "{A6F227E2-B6EC-4BD1-83AB-B318EE27D2A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboozed.Domain", "Bamboozed.Domain\Bamboozed.Domain.csproj", "{140F33DD-E8AC-45CA-AC35-E04F74750D81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bamboozed.Domain", "Bamboozed.Domain\Bamboozed.Domain.csproj", "{140F33DD-E8AC-45CA-AC35-E04F74750D81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bamboozed.DAL", "Bamboozed.DAL\Bamboozed.DAL.csproj", "{DD12DDE5-A7B5-417B-ABD8-05830C4B33A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bamboozed.DAL", "Bamboozed.DAL\Bamboozed.DAL.csproj", "{DD12DDE5-A7B5-417B-ABD8-05830C4B33A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

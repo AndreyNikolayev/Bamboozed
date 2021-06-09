@@ -46,7 +46,7 @@ namespace Bamboozed.Application.Services
             request.AddParameter("login", "Log in");
             await client.ExecuteAsync(request);
 
-            return client.CookieContainer.Count >= 9;
+            return client.CookieContainer.Count >= 3;
         }
     }
 }

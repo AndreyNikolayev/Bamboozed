@@ -14,11 +14,11 @@ namespace Bamboozed.Playground
     {
         private static async Task Main(string[] args)
         {
+            var lol = Environment.GetEnvironmentVariables();
+
             var collection = new ServiceCollection();
             ApplicationConfiguration.Setup(collection);
             var serviceProvider = collection.BuildServiceProvider();
-
-            var conversationId = Environment.GetEnvironmentVariable("TestConversationId");
 
             var service = serviceProvider.GetRequiredService<TimeOffService>();
 

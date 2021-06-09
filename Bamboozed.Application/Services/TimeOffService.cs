@@ -10,6 +10,7 @@ using Bamboozed.Domain.User;
 using MailKit;
 using MailKit.Net.Imap;
 using MailKit.Search;
+using MimeKit;
 
 namespace Bamboozed.Application.Services
 {
@@ -60,7 +61,12 @@ namespace Bamboozed.Application.Services
 
         private async Task HandleSingleRequest(IMailFolder folder, UniqueId messageId)
         {
-            var message = await folder.GetMessageAsync(messageId);
+            MimeMessage message;
+
+            lock (folder.SyncRoot)
+            {
+                message = folder.GetMessage(messageId);
+            }
 
             var request = _requestParser.ParseRequest(message);
 
@@ -73,7 +79,10 @@ namespace Bamboozed.Application.Services
                 await _bambooService.ApproveTimeOff(request);
             }
 
-            await folder.AddFlagsAsync(messageId, MessageFlags.Seen, false);
+            lock (folder.SyncRoot)
+            {
+                folder.AddFlags(messageId, MessageFlags.Seen, false);
+            }
 
             await _timeOffRequestLogRepository.Add(new TimeOffRequestLog(request, action));
 
