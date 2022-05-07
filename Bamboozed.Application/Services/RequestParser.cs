@@ -11,7 +11,7 @@ namespace Bamboozed.Application.Services
     public class RequestParser
     {
         private readonly Regex _requestorNameRegex = new Regex("<title>(.*) requested time off[^<]*</title>");
-        private readonly Regex _timeOffTypeRegex = new Regex("\\d+ days? of (\\S*)");
+        private readonly Regex _timeOffTypeRegex = new Regex("\\d+ days? of ([^\\n]*)");
         private readonly Regex _datesRegex = new Regex("(\\w{3}, \\w{3} \\d{1,2})(?: - )?(\\w{3}, \\w{3} \\d{1,2})?", RegexOptions.Multiline);
         private readonly Regex _approveLinkRegex = new Regex("<a[^>]*href=\"([^\"]*)\"[^>]*>Approve", RegexOptions.Singleline);
         private readonly Regex _denyLinkRegex = new Regex("<a[^>]*href=\"([^\"]*)\"[^>]*>Deny", RegexOptions.Singleline);
@@ -22,6 +22,8 @@ namespace Bamboozed.Application.Services
         {
             var body = message.HtmlBody;
             var datesMatch = _datesRegex.Match(body);
+
+            var lol = _timeOffTypeRegex.Match(body).Groups[1].Value;
 
             return new TimeOffRequest
             (

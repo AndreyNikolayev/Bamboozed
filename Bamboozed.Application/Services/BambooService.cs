@@ -44,7 +44,7 @@ namespace Bamboozed.Application.Services
             request.AddParameter("username", approverEmail);
             request.AddParameter("password", password);
             request.AddParameter("login", "Log in");
-            await client.ExecuteAsync(request);
+            var response = await client.ExecuteAsync(request);
 
             return client.CookieContainer.Count >= 3;
         }

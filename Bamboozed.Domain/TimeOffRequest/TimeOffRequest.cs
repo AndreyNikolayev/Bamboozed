@@ -79,8 +79,9 @@ namespace Bamboozed.Domain.TimeOffRequest
     {
         [Description("Sick-leave")]
         SickLeave,
-        [Description("Day-Off")]
-        DayOff,
+        [Description("Extra days (incl. for relocation needs)")]
+        ExtraDays,
+        [Description("Paid Inactive days (vacation or days off)")]
         Vacation
     }
 }
